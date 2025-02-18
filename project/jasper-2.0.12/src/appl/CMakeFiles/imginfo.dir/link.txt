@@ -1,0 +1,1 @@
+/usr/local/bin/clang   -rdynamic CMakeFiles/imginfo.dir/imginfo.c.o  -o imginfo  ../libjasper/libjasper.a -lm 

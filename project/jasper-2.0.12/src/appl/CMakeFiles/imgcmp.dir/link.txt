@@ -1,0 +1,1 @@
+/usr/local/bin/clang   -rdynamic CMakeFiles/imgcmp.dir/imgcmp.c.o  -o imgcmp  ../libjasper/libjasper.a -lm 

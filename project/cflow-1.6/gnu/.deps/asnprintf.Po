@@ -1,0 +1,14 @@
+asnprintf.o: asnprintf.c ../config.h vasnprintf.h \
+  /usr/local/lib/clang/12.0.0/include/stdarg.h \
+  /usr/local/lib/clang/12.0.0/include/stddef.h \
+  /usr/local/lib/clang/12.0.0/include/__stddef_max_align_t.h
+
+../config.h:
+
+vasnprintf.h:
+
+/usr/local/lib/clang/12.0.0/include/stdarg.h:
+
+/usr/local/lib/clang/12.0.0/include/stddef.h:
+
+/usr/local/lib/clang/12.0.0/include/__stddef_max_align_t.h:

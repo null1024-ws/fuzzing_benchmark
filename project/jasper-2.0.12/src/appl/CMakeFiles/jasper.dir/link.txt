@@ -1,0 +1,1 @@
+/usr/local/bin/clang   -rdynamic CMakeFiles/jasper.dir/jasper.c.o  -o jasper  ../libjasper/libjasper.a -lm 

@@ -1,0 +1,46 @@
+Determining if files io.h exist failed with the following output:
+Change Dir: /benchmark/project/jasper-2.0.12/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_06251/fast && /usr/bin/make -f CMakeFiles/cmTC_06251.dir/build.make CMakeFiles/cmTC_06251.dir/build
+make[1]: Entering directory '/benchmark/project/jasper-2.0.12/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_06251.dir/JAS_HAVE_IO_H.c.o
+/usr/local/bin/clang    -o CMakeFiles/cmTC_06251.dir/JAS_HAVE_IO_H.c.o   -c /benchmark/project/jasper-2.0.12/CMakeFiles/CheckIncludeFiles/JAS_HAVE_IO_H.c
+/benchmark/project/jasper-2.0.12/CMakeFiles/CheckIncludeFiles/JAS_HAVE_IO_H.c:2:10: fatal error: 'io.h' file not found
+#include <io.h>
+         ^~~~~~
+1 error generated.
+make[1]: *** [CMakeFiles/cmTC_06251.dir/build.make:66: CMakeFiles/cmTC_06251.dir/JAS_HAVE_IO_H.c.o] Error 1
+make[1]: Leaving directory '/benchmark/project/jasper-2.0.12/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_06251/fast] Error 2
+
+
+Source:
+/* */
+#include <io.h>
+
+
+int main(void){return 0;}
+
+Determining if files windows.h exist failed with the following output:
+Change Dir: /benchmark/project/jasper-2.0.12/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_62203/fast && /usr/bin/make -f CMakeFiles/cmTC_62203.dir/build.make CMakeFiles/cmTC_62203.dir/build
+make[1]: Entering directory '/benchmark/project/jasper-2.0.12/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_62203.dir/JAS_HAVE_WINDOWS_H.c.o
+/usr/local/bin/clang    -o CMakeFiles/cmTC_62203.dir/JAS_HAVE_WINDOWS_H.c.o   -c /benchmark/project/jasper-2.0.12/CMakeFiles/CheckIncludeFiles/JAS_HAVE_WINDOWS_H.c
+/benchmark/project/jasper-2.0.12/CMakeFiles/CheckIncludeFiles/JAS_HAVE_WINDOWS_H.c:2:10: fatal error: 'windows.h' file not found
+#include <windows.h>
+         ^~~~~~~~~~~
+1 error generated.
+make[1]: *** [CMakeFiles/cmTC_62203.dir/build.make:66: CMakeFiles/cmTC_62203.dir/JAS_HAVE_WINDOWS_H.c.o] Error 1
+make[1]: Leaving directory '/benchmark/project/jasper-2.0.12/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_62203/fast] Error 2
+
+
+Source:
+/* */
+#include <windows.h>
+
+
+int main(void){return 0;}
+
