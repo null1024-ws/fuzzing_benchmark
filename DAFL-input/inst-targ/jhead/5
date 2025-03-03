@@ -1,0 +1,5 @@
+jhead.c:ProcessFile
+jhead.c:RegenerateThumbnail
+jhead.c:main
+jpgfile.c:ReplaceThumbnail
+stat.h:DoCommand

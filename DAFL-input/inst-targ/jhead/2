@@ -1,0 +1,5 @@
+jhead.c:DoAutoRotate
+jhead.c:DoCommand
+jhead.c:ProcessFile
+jhead.c:main
+stat.h:DoCommand

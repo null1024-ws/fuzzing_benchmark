@@ -1,0 +1,4 @@
+jhead.c:DoFileRenaming
+jhead.c:ProcessFile
+jhead.c:main
+stat.h:DoCommand
