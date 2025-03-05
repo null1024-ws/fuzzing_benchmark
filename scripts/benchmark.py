@@ -216,12 +216,12 @@ SLICE_TARGETS = {
     'libtiff.a': {
         'frontend':'cil',
         'entry_point':'LLVMFuzzerTestOneInput',
-        'bugs': ['CVE-2025-66666', 'CVE-2025-88888']
+        'bugs': ['1', '2']
     },
     'cscope': {
         'frontend':'cil',
         'entry_point':'main',
-        'bugs': ['10']
+        'bugs': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
     }
 }
 
@@ -265,3 +265,4 @@ def check_targeted_crash(targ, replay_buf):
             return crash_checker(replay_buf)
     print("Unknown target: %s" % targ)
     exit(1)
+
