@@ -206,8 +206,23 @@ SLICE_TARGETS = {
     'jhead': {
         'frontend':'cil',
         'entry_point':'main',
-        'bugs': ['CVE-2018-6612', 'CVE-2018-17088', 'CVE-2018-16554', 'CVE-2022-28550']
+        'bugs': ['1', '2', '3', '4', '5', '6'] 
     },
+    'imginfo': {
+        'frontend':'cil',
+        'entry_point':'main',
+        'bugs': ['CVE-2018-19541', 'CVE-2017-9782', 'CVE-2017-13748', 'CVE-2017-13746']
+    },
+    'libtiff.a': {
+        'frontend':'cil',
+        'entry_point':'LLVMFuzzerTestOneInput',
+        'bugs': ['CVE-2025-66666', 'CVE-2025-88888']
+    },
+    'cscope': {
+        'frontend':'cil',
+        'entry_point':'main',
+        'bugs': ['10']
+    }
 }
 
 

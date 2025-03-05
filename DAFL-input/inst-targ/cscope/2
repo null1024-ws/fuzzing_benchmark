@@ -1,0 +1,6 @@
+build.c:build
+main.c:main
+mypopen.c:myfopen
+sigaction.h:main
+stat.h:accessible_file
+vpfopen.c:vpfopen

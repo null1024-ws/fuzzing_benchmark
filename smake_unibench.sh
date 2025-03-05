@@ -24,19 +24,21 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 # done
 
 ### Program: jasper-2.0.12
-cd /benchmark/project
-program="jasper-2.0.12"
-binaries="imginfo"
-cd $program
-cmake -DJAS_ENABLE_SHARED=OFF -DALLOW_IN_SOURCE_BUILD=ON .
-make -j clean
-yes | /smake/smake --init
-/smake/smake -j 1
-for binary in $binaries; do
-    cp -r sparrow/src/appl/$binary /benchmark/smake-out/$binary || exit 1
-done
 
-### Program: wav2swf
+# cd /benchmark/project
+# program="jasper-2.0.12"
+# binaries="imginfo"
+# cd $program
+# cmake -DJAS_ENABLE_SHARED=OFF -DALLOW_IN_SOURCE_BUILD=ON .
+# make -j
+# yes | /smake/smake --init
+# /smake/smake -j 1
+
+# for binary in $binaries; do
+#     cp -r sparrow/src/appl/$binary /benchmark/smake-out/$binary || exit 1
+# done
+
+### Program: wav2swf #ok
 # cd /benchmark/project
 # program="swftools-0.9.2"
 # binaries="wav2swf"
@@ -47,7 +49,7 @@ done
 # /smake/smake -j 1
 
 # for binary in $binaries; do
-#     cp -r sparrow/src/$binary /benchmark/smake-out/$binary || exit 1
+#     cp -r sparrow/ /benchmark/smake-out/$binary || exit 1
 # done
 
 # ### Program: mp3gain #ok
@@ -65,7 +67,7 @@ done
 #     cp -r sparrow/$binary /benchmark/smake-out/$binary || exit 1
 # done
 
-### Program: jhead 
+## Program: jhead 
 # cd /benchmark/project
 # program="jhead-3.00"
 # binaries="jhead"
@@ -75,5 +77,47 @@ done
 # /smake/smake -j 1
 
 # for binary in $binaries; do
-#     cp -r sparrow/$binary /benchmark/smake-out/$binary || exit 1
+#     cp -r sparrow/ /benchmark/smake-out/$binary || exit 1
 # done
+
+# ## Program: libtiff-4.7.0
+# cd /benchmark/project
+# program="libtiff"
+# binaries="libtiff.a"
+# cd $program
+# ./configure --disable-shared
+# make -j clean
+# yes | /smake/smake --init
+# /smake/smake -j 1
+
+
+# for binary in $binaries; do
+#     cp -r sparrow/libtiff/.libs/$binary /benchmark/smake-out/$binary || exit 1
+# done
+
+## Program: jhead-3.08
+# cd /benchmark/project
+# program="jhead-3.08"
+# binaries="jhead"
+# cd $program
+# make -j clean
+# yes | /smake/smake --init
+# /smake/smake -j 1
+
+# for binary in $binaries; do
+#     cp -r sparrow/$binary/ /benchmark/smake-out/$binary || exit 1
+# done
+
+## Program cscope-15.9
+cd /benchmark/project
+program="cscope-15.9"
+binaries="cscope"
+cd $program
+./configure
+make -j clean
+yes | /smake/smake --init
+/smake/smake -j 1
+
+for binary in $binaries; do
+    cp -r sparrow/src/$binary /benchmark/smake-out/$binary || exit 1
+done

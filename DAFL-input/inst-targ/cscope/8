@@ -1,0 +1,4 @@
+dir.c:makefilelist
+main.c:main
+sigaction.h:main
+stat.h:accessible_file

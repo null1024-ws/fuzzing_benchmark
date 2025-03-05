@@ -1,0 +1,6 @@
+command.c:countrefs
+display.c:display
+display.c:ogsnames
+main.c:main
+sigaction.h:main
+stat.h:accessible_file

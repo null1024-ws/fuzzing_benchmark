@@ -1,0 +1,5 @@
+logdir.c:logdir
+logdir.c:nextfield
+main.c:main
+sigaction.h:main
+stat.h:accessible_file
