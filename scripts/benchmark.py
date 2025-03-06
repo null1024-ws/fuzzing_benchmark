@@ -221,7 +221,7 @@ SLICE_TARGETS = {
     'cscope': {
         'frontend':'cil',
         'entry_point':'main',
-        'bugs': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+        'bugs': ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14']
     }
 }
 
@@ -265,4 +265,3 @@ def check_targeted_crash(targ, replay_buf):
             return crash_checker(replay_buf)
     print("Unknown target: %s" % targ)
     exit(1)
-
