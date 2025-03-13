@@ -205,13 +205,13 @@ mv $LLVM_TOOLS_TMPDIR/* /usr/local/bin/
 # rm -rf $LLVM_TOOLS_TMPDIR
 
 # Other packages
-apt-get install bison
-apt-get install libtool
-apt-get install flex
-apt-get install nasm
-apt-get install libbz2-dev liblzo2-dev
-apt-get install zlib1g zlib1g-dev
-apt-get install inotify-tools
+apt-get install -y bison
+apt-get install -y libtool
+apt-get install -y flex
+apt-get install -y nasm
+apt-get install -y libbz2-dev liblzo2-dev
+apt-get install -y zlib1g zlib1g-dev
+apt-get install -y inotify-tools
 # Remove binaries from LLVM buld that we don't need.
 # rm -f \
 #  /usr/local/bin/bugpoint \
