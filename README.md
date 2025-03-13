@@ -21,6 +21,7 @@ Switch to the `jhead-3.08` directory and compile the project with the following 
 ```shell
 cd /jhead-3.08
 make clean
+# avoid error: clang-12: unsupported argument 'auto' to option 'flto='
 CFLAGS="-g -O2 -flto -fstack-protector-strong -Wformat -Werror=format-security" 
 LDFLAGS="-Wl,-Bsymbolic-functions -flto -Wl,-z,relro" 
 make -j$(nproc)
