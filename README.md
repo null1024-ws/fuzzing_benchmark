@@ -29,10 +29,12 @@ make -j$(nproc)
 ### Creating Output Directory
 Before running the fuzzer, create an output directory:
 ```
+# Do delete all the content in the /output dir before you start a new fuzzing session
 mkdir output
 ```
 ### Running the Fuzzer
 Execute the fuzzing process using the following command:
 ```
-AFL_NO_UI=1 $DAFL_FUZZ -m none -d -i /fuzzing_benchmark/seed/jhead-3.08 -o ./output/ -F 6 -- ./jhead
+# You may need to set `export AFL_SKIP_CPUFREQ=1`
+AFL_NO_UI=1 $DAFL_FUZZ -m none -d -i /fuzzing_benchmark/seed/jhead-3.08 -o ./output -F 6 -- ./jhead
 ```
