@@ -37,5 +37,5 @@ mkdir output
 Execute the fuzzing process using the following command:
 ```shell
 # You may need to set `export AFL_SKIP_CPUFREQ=1`
-AFL_NO_UI=1 $DAFL_FUZZ -m none -d -i /fuzzing_benchmark/seed/jhead-3.08 -o ./output -F 6 -- ./jhead
+AFL_NO_UI=1 $DAFL_FUZZ -m none -d -i /fuzzing_benchmark/seed/jhead-3.08 -o ./output -F 6 -- ./jhead @@
 ```
