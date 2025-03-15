@@ -1,6 +1,6 @@
 # Fuzzing Benchmark for 0-day Vulnerabilities
 
-## 1. Jhead-3.08
+## 1. jhead-3.08
 
 ### Environment Setup
 Before starting the fuzzing process, set the necessary environment variables:
@@ -38,7 +38,7 @@ Execute the fuzzing process using the following command:
 ```shell
 AFL_NO_UI=1 $DAFL_FUZZ -m none -d -i ../fuzzing_benchmark/seed/jhead-3.08 -o ./output -F 6 -- ./jhead @@
 ```
-## 2. Cscope-15.9
+## 2. cscope-15.9
 ### Environment Setup
 Before starting the fuzzing process, set the necessary environment variables:
 
@@ -70,3 +70,23 @@ Execute the fuzzing process using the following command:
 ```shell
 
 ```
+## 3. libtiff-4.7.0
+### Compilation
+Fetch the `libtiff` project:
+```shell
+git clone https://github.com/null1024-ws/libtiff.git
+```
+Switch to `libtiff ` dir and compile the project with the following command:
+```shell
+./autogen.sh
+./configure --disable-shared
+cd libtiff
+make -j1 clean
+make -j1 libtiff_fuzzer
+```
+### Running the Fuzzer
+Execute the fuzzing process using the following command:
+```shell
+AFL_NO_UI=1 $DAFL_FUZZ -m none -d -i ../fuzzing_benchmark/seed/libtiff-4.7.0/ -o ./output/ -F 4 -- ./binary/libtiff_fuzzer @@
+```
+
