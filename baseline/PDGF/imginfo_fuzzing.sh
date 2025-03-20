@@ -26,7 +26,10 @@ echo "$TARGET_FILE" > targets
 # prepare the input
 mkdir in
 cp -r ../../seeds/general_evaluation/imginfo/* in/
-echo 1 > pre_edges.txt
+if [ ! -f pre_edges.txt ] || [ "$(cat pre_edges.txt)" -eq 0 ]; then
+    echo 1 > pre_edges.txt
+fi
+
 pre_edges=$(cat pre_edges.txt)
 
 ~/PDGF/fuzz/afl-fuzz -i in -o out -e "$pre_edges" -- ./imginfo.ci -f @@
