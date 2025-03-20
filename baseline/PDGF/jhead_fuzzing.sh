@@ -25,7 +25,11 @@ echo "$TARGET_FILE" > targets
 # prepare the input
 mkdir in
 cp -r ../../seeds/general_evaluation/jhead/* in/
-echo 1 > pre_edges.txt # make sure the fuzzing can start
+
+if [ ! -f pre_edges.txt ] || [ "$(cat pre_edges.txt)" -eq 0 ]; then
+    echo 1 > pre_edges.txt  # make sure the fuzzing can start
+fi
+
 pre_edges=$(cat pre_edges.txt)
 
 ~/PDGF/fuzz/afl-fuzz -i in -o out -e "$pre_edges" -- ./jhead.ci @@
