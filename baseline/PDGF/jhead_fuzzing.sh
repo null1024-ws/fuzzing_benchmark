@@ -12,7 +12,8 @@ tar -xvf jhead-3.00.tar.gz
 
 # compile
 cd jhead-3.00
-CC=~/gllvm/gclang CXX=~/gllvm/gclang++ make clean
+CC=~/gllvm/gclang CXX=~/gllvm/gclang++ 
+make clean
 make -j
 ~/gllvm/get-bc jhead
 mkdir fuzz
