@@ -45,9 +45,10 @@ cd ..
 
 
 # fetch libtiff
-git clone --no-checkout https://gitlab.com/libtiff/libtiff.git libtiff
-git -C libtiff checkout c145a6c14978f73bb484c955eb9f84203efcb12e
-# cp libtiff/src/tiff_read_rgba_fuzzer.cc libtiff/contrib/oss-fuzz/tiff_read_rgba_fuzzer.cc
+git clone https://github.com/null1024-ws/libtiff-magma.git libtiff
+# git clone --no-checkout https://gitlab.com/libtiff/libtiff.git libtiff
+# git -C libtiff checkout c145a6c14978f73bb484c955eb9f84203efcb12e
+
 
 # fetch libxml2
 git clone --no-checkout https://gitlab.gnome.org/GNOME/libxml2.git libxml2
