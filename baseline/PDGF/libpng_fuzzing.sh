@@ -40,4 +40,4 @@ echo "$TARGET_FILE" > targets
 mkdir in
 cp -r ../../seed/libpng/corpus/libpng_read_fuzzer/* in/
 pre_edges=$(cat pre_edges.txt)
-~/PDGF/fuzz/afl-fuzz -i in -o out -e "$pre_edges" -- ./libpng-read-fuzzer.ci
+~/PDGF/fuzz/afl-fuzz -i in -o out -e "$pre_edges" -- ./libpng-read-fuzzer.ci @@
