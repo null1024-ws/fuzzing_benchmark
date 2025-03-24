@@ -12,7 +12,8 @@ tar -xvf swftools-0.9.2.tar.gz
 
 # compile
 cd swftools-0.9.2
-CC=~/gllvm/gclang CXX=~/gllvm/gclang++ 
+export CC=~/gllvm/gclang
+export CXX=~/gllvm/gclang++
 ./configure
 make -j
 ~/gllvm/get-bc src/wav2swf
