@@ -19,7 +19,7 @@ LLVM_COMPILER=clang
 
 sed -i 's/CC=/CC?=/' Makefile # command copied from unibench build scripts
 make clean
-make CFLAGS="-g"
+make CFLAGS="-g" # mandatory flags
 extract-bc mp3gain
 
 
