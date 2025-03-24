@@ -9,7 +9,9 @@ rm -rf cflow-1.6
 tar -xvf cflow-1.6.tar.gz
 # compile
 cd cflow-1.6
-CC=~/gllvm/gclang CXX=~/gllvm/gclang++ ./configure
+export CC=~/gllvm/gclang
+export CXX=~/gllvm/gclang++
+./configure
 make -j
 ~/gllvm/get-bc src/cflow
 mkdir fuzz
