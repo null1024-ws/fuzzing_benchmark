@@ -13,7 +13,8 @@ unzip -o mp3gain-1.5.2.zip -d mp3gain-1.5.2
 
 # compile
 cd mp3gain-1.5.2
-CC=~/gllvm/gclang CXX=~/gllvm/gclang++ 
+export CC=~/gllvm/gclang
+export CXX=~/gllvm/gclang++
 sed -i 's/CC=/CC?=/' Makefile
 make -j
 ~/gllvm/get-bc mp3gain
