@@ -12,7 +12,8 @@ tar -xvf jasper-2.0.12.tar.gz
 
 # compile
 cd jasper-2.0.12
-CC=~/gllvm/gclang CXX=~/gllvm/gclang++ 
+export CC=~/gllvm/gclang
+export CXX=~/gllvm/gclang++
 cmake -DJAS_ENABLE_SHARED=OFF -DALLOW_IN_SOURCE_BUILD=ON .
 make -j
 ~/gllvm/get-bc ./src/appl/imginfo
