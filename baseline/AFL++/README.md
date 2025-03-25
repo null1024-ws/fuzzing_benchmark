@@ -11,5 +11,3 @@ Build Summary:
 [-] gcc_mode could not be built, it is optional, install gcc-VERSION-plugin-dev to enable this
 ```
 
-### Fuzzing
-
