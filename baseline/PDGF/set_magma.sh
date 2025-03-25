@@ -42,8 +42,6 @@ for file in pngrutil.c pngset.c pngtest.c pngread.c; do
 done
 
 cd ..
-
-
 # fetch libtiff
 git clone https://github.com/null1024-ws/libtiff-magma.git libtiff
 # git clone --no-checkout https://gitlab.com/libtiff/libtiff.git libtiff
@@ -51,8 +49,8 @@ git clone https://github.com/null1024-ws/libtiff-magma.git libtiff
 
 
 # fetch libxml2
-git clone --no-checkout https://gitlab.gnome.org/GNOME/libxml2.git libxml2
-git -C libxml2 checkout ec6e3efb06d7b15cf5a2328fabd3845acea4c815
+git clone https://github.com/null1024-ws/libxml2-magma.git libxml2
+# git -C libxml2 checkout ec6e3efb06d7b15cf5a2328fabd3845acea4c815
 
 # fetch lua
 git clone --no-checkout https://github.com/lua/lua.git lua
