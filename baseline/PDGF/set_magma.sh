@@ -50,6 +50,11 @@ git clone https://github.com/null1024-ws/libtiff-magma.git libtiff
 
 # fetch libxml2
 git clone https://github.com/null1024-ws/libxml2-magma.git libxml2
+cd libxml2
+# comment unrelated log function
+for file in parser.c valid.c xmlreader.c xinclude.c; do
+    sed -i 's/.*mdafl_gc_log.*/\/\/ &/' "$file"
+done
 # git -C libxml2 checkout ec6e3efb06d7b15cf5a2328fabd3845acea4c815
 
 # fetch lua

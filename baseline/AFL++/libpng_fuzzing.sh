@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # fetch libpng
-if [ ! -d "libpng" ]; then
-    git clone https://github.com/null1024-ws/libpng-magma.git libpng
-    # Comment out unrelated log function
-    for file in pngrutil.c pngset.c pngtest.c pngread.c; do
-        sed -i 's/.*mdafl_gc_log.*/\/\/ &/' "$file"
-    done
-else
-    echo "libpng already cloned, skipping fetch."
-fi
+# if [ ! -d "libpng" ]; then
+#     git clone https://github.com/null1024-ws/libpng-magma.git libpng
+#     # Comment out unrelated log function
+#     for file in pngrutil.c pngset.c pngtest.c pngread.c; do
+#         sed -i 's/.*mdafl_gc_log.*/\/\/ &/' "$file"
+#     done
+# else
+#     echo "libpng already cloned, skipping fetch."
+# fi
 
 # compile this project with wrapper
 cd libpng
