@@ -41,6 +41,9 @@ for file in pngrutil.c pngset.c pngtest.c pngread.c; do
     sed -i 's/.*mdafl_gc_log.*/\/\/ &/' "$file"
 done
 
+# git clone --no-checkout https://github.com/glennrp/libpng.git libpng
+# git -C libpng checkout a37d4836519517bdce6cb9d956092321eca3e73b
+
 cd ..
 # fetch libtiff
 git clone https://github.com/null1024-ws/libtiff-magma.git libtiff
@@ -55,6 +58,8 @@ cd libxml2
 for file in parser.c valid.c xmlreader.c xinclude.c; do
     sed -i 's/.*mdafl_gc_log.*/\/\/ &/' "$file"
 done
+cd ..
+# git clone --no-checkout https://gitlab.gnome.org/GNOME/libxml2.git libxml2
 # git -C libxml2 checkout ec6e3efb06d7b15cf5a2328fabd3845acea4c815
 
 # fetch lua
