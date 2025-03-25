@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # fetch libtiff
-if [ ! -d "libtiff" ]; then
-    git clone https://github.com/null1024-ws/libtiff-magma.git libtiff
-else
-    echo "libtiff already cloned, skipping fetch."
-fi
+# if [ ! -d "libtiff" ]; then
+#     git clone https://github.com/null1024-ws/libtiff-magma.git libtiff
+# else
+#     echo "libtiff already cloned, skipping fetch."
+# fi
 
 cd libtiff
 # compile this project with wrapper
