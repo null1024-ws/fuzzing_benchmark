@@ -3,8 +3,6 @@
 # fetch libpng
 if [ ! -d "libpng" ]; then
     git clone https://github.com/null1024-ws/libpng-magma.git libpng
-    cd libpng
-
     # Comment out unrelated log function
     for file in pngrutil.c pngset.c pngtest.c pngread.c; do
         sed -i 's/.*mdafl_gc_log.*/\/\/ &/' "$file"
@@ -14,6 +12,7 @@ else
 fi
 
 # compile this project with wrapper
+cd libpng
 export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
 export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
 export CC=~/afl++/afl-cc
