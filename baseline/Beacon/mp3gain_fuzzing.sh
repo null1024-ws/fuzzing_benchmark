@@ -14,8 +14,9 @@ unzip -o mp3gain-1.5.2.zip -d mp3gain-1.5.2
 
 # generate the bc file
 cd mp3gain-1.5.2
-CC=wllvm CXX=wllvm++
-LLVM_COMPILER=clang
+export CC=wllvm
+export CXX=wllvm++
+export LLVM_COMPILER=clang
 
 sed -i 's/CC=/CC?=/' Makefile # command copied from unibench build scripts
 make clean
