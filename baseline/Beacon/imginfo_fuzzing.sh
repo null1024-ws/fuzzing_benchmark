@@ -1,4 +1,5 @@
-et -e
+#!/bin/bash
+set -e
 
 TARGET_FILE=$1
 if [ -z "$TARGET_FILE" ]; then
@@ -10,11 +11,13 @@ rm -rf jasper-2.0.12
 tar -xvf jasper-2.0.12.tar.gz
 
 cd jasper-2.0.12
+export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 export CC=wllvm 
 export CXX=wllvm++
 export LLVM_COMPILER=clang
 cmake -DJAS_ENABLE_SHARED=OFF -DALLOW_IN_SOURCE_BUILD=ON .
-make CFLAGS="-g"
+make -j
 
 extract-bc ./src/appl/imginfo
 
