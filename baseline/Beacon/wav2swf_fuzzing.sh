@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 set -e
 
 TARGET_FILE=$1
@@ -12,17 +12,21 @@ tar -xvf swftools-0.9.2.tar.gz
 
 cd swftools-0.9.2
 
+# export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
+# export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
+export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 export CC=wllvm
 export CXX=wllvm++
 export LLVM_COMPILER=clang
 
+
 ./configure
 make clean
-make CFLAGS="-g" -j # mandatory flags
+make
+
 extract-bc src/wav2swf
-# export LLVM_COMPILER=clang
-# CC=wllvm CXX=wllvm++ ./configure
-# make -j
+
 
 
 mkdir -p wav2swf_fuzzing
@@ -47,4 +51,4 @@ cp -r ../../seeds/general_evaluation/wav/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-/Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./wav_${BASENAME}_${LINENUM} @@
+/Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./wav2swf_${BASENAME}_${LINENUM} @@
