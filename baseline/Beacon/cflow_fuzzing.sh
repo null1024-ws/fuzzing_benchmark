@@ -13,8 +13,9 @@ tar -xvf cflow-1.6.tar.gz
 
 # get the bc file
 cd cflow-1.6
-CC=wllvm CXX=wllvm++
-LLVM_COMPILER=clang
+export CC=wllvm 
+export CXX=wllvm++
+export LLVM_COMPILER=clang
 ./configure
 make clean
 make CFLAGS="-g" # mandatory flags
