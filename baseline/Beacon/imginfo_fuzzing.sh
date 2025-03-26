@@ -10,8 +10,9 @@ rm -rf jasper-2.0.12
 tar -xvf jasper-2.0.12.tar.gz
 
 cd jasper-2.0.12
-CC=wllvm CXX=wllvm++
-LLVM_COMPILER=clang
+export CC=wllvm 
+export CXX=wllvm++
+export LLVM_COMPILER=clang
 cmake -DJAS_ENABLE_SHARED=OFF -DALLOW_IN_SOURCE_BUILD=ON .
 make CFLAGS="-g"
 
