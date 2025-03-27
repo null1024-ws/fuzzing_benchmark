@@ -27,8 +27,8 @@ make -j$(nproc)
 extract-bc jhead
 
 # Prepare fuzzing directory
-mkdir -p jhead_fuzzing
-cd jhead_fuzzing
+mkdir -p "${BIN_NAME}_fuzzing"
+cd "${BIN_NAME}_fuzzing"
 
 TARGET_FILE="cstest.txt"
 printf "%s\n" "$@" > "$TARGET_FILE"
