@@ -1,7 +1,5 @@
 ### Running Titan
-Titan leverages components of the static analysis module from [Beacon](https://github.com/5hadowblad3/Beacon_artifact), allowing experiments to be conducted within the Beacon Docker container.
-
-Follow the steps below to set up and run Titan for fuzzing. 
+Titan leverages components of the static analysis module from [Beacon](https://github.com/5hadowblad3/Beacon_artifact), allowing experiments to be conducted within the Beacon Docker container. Follow the steps below to set up and run Titan for fuzzing. 
 
 To fetch Titan, clone the repository from GitHub using: 
 ```shell
