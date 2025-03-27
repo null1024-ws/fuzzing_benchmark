@@ -27,9 +27,9 @@ make -j
 
 extract-bc ./src/appl/imginfo
 
-# Prepare fuzzing directory
-mkdir -p imginfo_fuzzing
-cd imginfo_fuzzing
+#prepare the fuzzing dir
+mkdir -p "${BIN_NAME}_fuzzing"
+cd "${BIN_NAME}_fuzzing"
 
 TARGET_FILE="cstest.txt"
 printf "%s\n" "$@" > "$TARGET_FILE"
