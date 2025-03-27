@@ -27,9 +27,8 @@ make clean
 make -j$(nproc)  
 extract-bc src/cflow
 
-# Prepare fuzzing directory
-mkdir -p cflow_fuzzing
-cd cflow_fuzzing
+mkdir -p "${BIN_NAME}_fuzzing"
+cd "${BIN_NAME}_fuzzing"
 
 TARGET_FILE="cstest.txt"
 printf "%s\n" "$@" > "$TARGET_FILE"
