@@ -11,10 +11,10 @@ Once fetched, you can start fuzzing with different benchmarks.
 
 - For [Unibench](https://github.com/unifuzz/unibench), first run the setup script to fetch the required projects and seeds with: 
 ```shell
-./set_unibench.sh 
+./set_unibench.sh (optionally, create a dedicated directory and copy all the scripts there before running). 
 ``` 
 
 Then, execute the multi-target fuzzing script for your target binary. For example, to fuzz the `cflow` binary:
 ```
-./cflow_fuzzing.sh "file1:num1" "file2:num2" (optionally, create a dedicated directory and copy fuzzing scripts there before running). 
+./cflow_fuzzing.sh "file1:num1" "file2:num2" 
 ```
