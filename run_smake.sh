@@ -67,7 +67,7 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 #     cp -r sparrow/$binary /benchmark/smake-out/$binary || exit 1
 # done
 
-## Program: jhead 
+## Program: jhead #ok
 # cd /benchmark/project
 # program="jhead-3.00"
 # binaries="jhead"
@@ -80,7 +80,7 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 #     cp -r sparrow/ /benchmark/smake-out/$binary || exit 1
 # done
 
-# ## Program: libtiff-4.7.0
+## Program: libtiff-4.7.0
 # cd /benchmark/project
 # program="libtiff"
 # binaries="libtiff.a"
@@ -95,7 +95,7 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 #     cp -r sparrow/libtiff/.libs/$binary /benchmark/smake-out/$binary || exit 1
 # done
 
-## Program: jhead-3.08
+## Program: jhead-3.08 #ok
 # cd /benchmark/project
 # program="jhead-3.08"
 # binaries="jhead"
@@ -108,7 +108,7 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 #     cp -r sparrow/$binary/ /benchmark/smake-out/$binary || exit 1
 # done
 
-## Program cscope-15.9
+## Program cscope-15.9 #ok
 cd /benchmark/project
 program="cscope-15.9"
 binaries="cscope"
@@ -120,4 +120,18 @@ yes | /smake/smake --init
 
 for binary in $binaries; do
     cp -r sparrow/src/$binary /benchmark/smake-out/$binary || exit 1
+done
+
+## Program: lame-3.99.5 #ok
+cd /benchmark/project
+program="lame-3.99.5"
+binaries="lame"
+cd $program
+./configure --disable-shared
+make -j clean
+yes | /smake/smake --init
+/smake/smake -j 1
+
+for binary in $binaries; do
+    cp -r sparrow/frontend/$binary /benchmark/smake-out/$binary || exit 1
 done
