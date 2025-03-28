@@ -9,7 +9,7 @@ export CC="clang"
 export CXX="clang++"
 export CMAKE_EXPORT_COMPILE_COMMANDS=1
 
-### Program: cflow-1.6 #ok
+## Program: cflow-1.6 #ok
 # cd /benchmark/project
 # program="cflow-1.6"
 # binaries="cflow"
@@ -23,8 +23,7 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 #     cp -r sparrow/src/$binary /benchmark/smake-out/$binary || exit 1
 # done
 
-### Program: jasper-2.0.12
-
+## Program: jasper-2.0.12 #no
 # cd /benchmark/project
 # program="jasper-2.0.12"
 # binaries="imginfo"
@@ -38,7 +37,7 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 #     cp -r sparrow/src/appl/$binary /benchmark/smake-out/$binary || exit 1
 # done
 
-### Program: wav2swf #ok
+## Program: wav2swf #ok
 # cd /benchmark/project
 # program="swftools-0.9.2"
 # binaries="wav2swf"
@@ -52,7 +51,7 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 #     cp -r sparrow/ /benchmark/smake-out/$binary || exit 1
 # done
 
-# ### Program: mp3gain #ok
+## Program: mp3gain #ok
 # cd /benchmark/project
 # program="mp3gain-1.5.2"
 # binaries="mp3gain"
@@ -109,18 +108,18 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 # done
 
 ## Program cscope-15.9 #ok
-cd /benchmark/project
-program="cscope-15.9"
-binaries="cscope"
-cd $program
-./configure
-make -j clean
-yes | /smake/smake --init
-/smake/smake -j 1
+# cd /benchmark/project
+# program="cscope-15.9"
+# binaries="cscope"
+# cd $program
+# ./configure
+# make -j clean
+# yes | /smake/smake --init
+# /smake/smake -j 1
 
-for binary in $binaries; do
-    cp -r sparrow/src/$binary /benchmark/smake-out/$binary || exit 1
-done
+# for binary in $binaries; do
+#     cp -r sparrow/src/$binary /benchmark/smake-out/$binary || exit 1
+# done
 
 ## Program: lame-3.99.5 #ok
 cd /benchmark/project
