@@ -45,4 +45,4 @@ cp -r ../../seeds/general_evaluation/lame3.99.5/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-/Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./lame_${BASENAME}_${LINENUM} "@@ /dev/null"
+/Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./lame_${BASENAME}_${LINENUM} @@ /dev/null

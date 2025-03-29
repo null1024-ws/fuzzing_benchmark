@@ -52,5 +52,5 @@ cp -r ../../seeds/general_evaluation/lame3.99.5/* "$SEEDS_DIR/"
 
 # Start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you may comment this line
-"$REPO_DIR/afl-fuzz" -i "$SEEDS_DIR" -o out -m none -t 99999 -s ./bug_conf_cluster -k ./bug_over_cluster -d -- ./"$BIN_NAME" @@
+"$REPO_DIR/afl-fuzz" -i "$SEEDS_DIR" -o out -m none -t 99999 -s ./bug_conf_cluster -k ./bug_over_cluster -d -- ./"$BIN_NAME" @@ /dev/null
 
