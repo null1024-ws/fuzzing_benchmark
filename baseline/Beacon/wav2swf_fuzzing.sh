@@ -51,4 +51,4 @@ cp -r ../../seeds/general_evaluation/wav/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-/Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./wav2swf_${BASENAME}_${LINENUM} @@
+/Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./wav2swf_${BASENAME}_${LINENUM} -o /dev/null @@
