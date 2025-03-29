@@ -49,4 +49,4 @@ pre_edges=$(cat pre_edges.txt)
 # start fuzzing
 export AFL_NO_AFFINITY=1
 export AFL_SKIP_CPUFREQ=1
-~/PDGF/fuzz/afl-fuzz -i in -o out -e "$pre_edges" -- ./lame.ci "@@ /dev/null"
+~/PDGF/fuzz/afl-fuzz -i in -o out -e "$pre_edges" -- ./lame.ci @@ /dev/null
