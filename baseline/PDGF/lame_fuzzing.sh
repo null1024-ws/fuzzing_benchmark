@@ -13,10 +13,12 @@ tar -xvf lame-3.99.5.tar.gz
 
 # compile
 cd lame-3.99.5
+export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 export CC=~/gllvm/gclang
 export CXX=~/gllvm/gclang++
 ./configure --disable-shared
-make -j CFLAGS="-O2"
+make -j
 
 # get the bc file
 ~/gllvm/get-bc frontend/lame
