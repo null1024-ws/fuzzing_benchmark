@@ -28,9 +28,9 @@ echo "$TARGET_FILE" > targets
 mkdir in
 cp -r ../../seeds/general_evaluation/jhead/* in/
 
-if [ ! -f pre_edges.txt ] || [ "$(cat pre_edges.txt)" -eq 0 ]; then
-    echo 1 > pre_edges.txt  # make sure the fuzzing can start
-fi
+# if [ ! -f pre_edges.txt ] || [ "$(cat pre_edges.txt)" -eq 0 ]; then
+#     echo 1 > pre_edges.txt  # make sure the fuzzing can start
+# fi
 
 pre_edges=$(cat pre_edges.txt)
 
