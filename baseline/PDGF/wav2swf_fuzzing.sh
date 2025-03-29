@@ -34,4 +34,5 @@ if [ ! -f pre_edges.txt ] || [ "$(cat pre_edges.txt)" -eq 0 ]; then
 fi
 pre_edges=$(cat pre_edges.txt)
 
-~/PDGF/fuzz/afl-fuzz -i in -o out -e "$pre_edges" -- ./wav2swf.ci -o /dev/null @@
+~/PDGF/fuzz/afl-fuzz -i in -o out -e "$pre_edges" -- ./wav2swf.ci -o /dev/null -o /dev/null @@
+
