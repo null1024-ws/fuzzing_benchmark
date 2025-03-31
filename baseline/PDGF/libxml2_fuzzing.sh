@@ -9,8 +9,8 @@ fi
 
 export CC=~/gllvm/gclang
 export CXX=~/gllvm/gclang++
-export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
-export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
+export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 
 cd libxml2
 
@@ -22,13 +22,10 @@ cd libxml2
     --disable-shared
 
 make -j$(nproc) clean
-make -j$(nproc) all
+make -j$(nproc) libxml2_fuzzer
 
-fuzzer="libxml2_xml_reader_for_file_fuzzer"
+fuzzer="libxml2_fuzzer"
 
-$CXX $CXXFLAGS -std=c++11 -Iinclude/ -I./ \
-    "./$fuzzer.cc" -o "$fuzzer" \
-    .libs/libxml2.a $LDFLAGS $LIBS -lz -llzma -fsanitize=fuzzer
 
 ~/gllvm/get-bc "./$fuzzer"
 
@@ -41,12 +38,15 @@ cp "../$fuzzer.bc" .
 echo "$TARGET_FILE" > targets
 
 ~/PDGF/instrument/bin/cbi -targets=targets "$fuzzer.bc"
-~/PDGF/fuzz/afl-clang-fast "$fuzzer.bc" -o "$fuzzer.ci"
+~/PDGF/fuzz/afl-clang-fast "$fuzzer.bc" -o "$fuzzer.ci" -lz -lm -llzma 
 
 mkdir in
-cp -r ../../seed/libxml2/corpus/$fuzzer/* in/
+cp -r ../../seed/libxml2/corpus/libxml2_xml_reader_for_file_fuzzer/* in/
+
+# Ensure pre_edges.txt is not zero
+if [ ! -f pre_edges.txt ] || [ "$(cat pre_edges.txt)" -eq 0 ]; then
+    echo 1 > pre_edges.txt
+fi
 
 pre_edges=$(cat pre_edges.txt)
-
-~/PDGF/fuzz/afl-fuzz -i in -o "out_$fuzzer" -e "$pre_edges" -- ./$fuzzer.ci @@
-
+~/PDGF/fuzz/afl-fuzz -t 99999+ -i in -o "out_$fuzzer" -e "$pre_edges" -- ./$fuzzer.ci @@
