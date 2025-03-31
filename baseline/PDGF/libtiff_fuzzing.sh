@@ -8,12 +8,12 @@ if [ -z "$TARGET_FILE" ]; then
     exit 1
 fi
 
-export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
-export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
+export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 
 cd libtiff
-CC=~/gllvm/gclang
-CXX=~/gllvm/gclang++
+export CC=~/gllvm/gclang
+export CXX=~/gllvm/gclang++
 
 ./autogen.sh
 ./configure --disable-shared
@@ -31,7 +31,8 @@ cp ../libtiff_fuzzer.bc .
 echo "$TARGET_FILE" > targets
 
 ~/PDGF/instrument/bin/cbi -targets=targets libtiff_fuzzer.bc
-~/PDGF/fuzz/afl-clang-fast libtiff_fuzzer.bc -o libtiff_fuzzer.ci
+# ~/PDGF/fuzz/afl-clang-fast libtiff_fuzzer.bc -o libtiff_fuzzer.ci -lm -lz
+~/PDGF/fuzz/afl-clang-fast libtiff_fuzzer.bc -o libtiff_fuzzer.ci -lm -lz -ljpeg -ljbig -llzma
 
 mkdir in
 cp -r ../../../seed/libtiff/corpus/tiff_read_rgba_fuzzer/* in/
@@ -39,3 +40,4 @@ cp -r ../../../seed/libtiff/corpus/tiff_read_rgba_fuzzer/* in/
 pre_edges=$(cat pre_edges.txt)
 
 ~/PDGF/fuzz/afl-fuzz -i in -o out -e "$pre_edges" -- ./libtiff_fuzzer.ci @@
+
