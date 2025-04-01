@@ -46,8 +46,8 @@ clang libxml2_fuzzer_${BASENAME}_${LINENUM}.bc -o libxml2_fuzzer_${BASENAME}_${L
 
 # prepare the seeds
 mkdir in
-# cp -r /Beacon/beacon_fuzzing/magma/targets/lua/corpus/lua/* in/
-cp -r ../../seed/lua/corpus/libxml2/libxml2_xml_reader_for_file_fuzzer/* in/
+# cp -r ../../seed/libxml2/corpus/libxml2_xml_reader_for_file_fuzzer/* in/
+cp -r /Beacon/beacon_fuzzing/magma/targets/libxml2/corpus/libxml2_xml_reader_for_file_fuzzer/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
