@@ -43,7 +43,7 @@ clang libpng-read-fuzzer_${BASENAME}_${LINENUM}.bc -o libpng-read-fuzzer_${BASEN
 
 # prepare the seeds
 mkdir in
-cp -r ../../seed/lua/corpus/libpng/libpng_read_fuzzer/* in/
+cp -r ../../seed/libpng/corpus/libpng_read_fuzzer/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
