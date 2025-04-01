@@ -45,6 +45,7 @@ clang libpng-read-fuzzer_${BASENAME}_${LINENUM}.bc -o libpng-read-fuzzer_${BASEN
 mkdir in
 # cp -r ../../seed/libpng/corpus/libpng_read_fuzzer/* in/
 cp -r /Beacon/beacon_fuzzing/magma/targets/libpng/corpus/libpng_read_fuzzer/* in/
+
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
 /Beacon/afl-fuzz -i in -o out -m none -t 99999+ -d -- ./libpng-read-fuzzer_${BASENAME}_${LINENUM} @@
