@@ -36,7 +36,6 @@ LINENUM=$(echo "$TARGET_FILE" | awk -F: '{print $2}')
 /Beacon/precondInfer ../libtiff_fuzzer.bc --target-file=cstest.txt --join-bound=5 >precond_log 2>&1
 # instrument
 /Beacon/Ins -output=libtiff_fuzzer_${BASENAME}_${LINENUM}.bc -blocks=bbreaches.txt -afl -log=log.txt -load=range_res.txt transed.bc
-
 # compile
 clang libtiff_fuzzer_${BASENAME}_${LINENUM}.bc -o libtiff_fuzzer_${BASENAME}_${LINENUM} -lm -lz -ljpeg -ljbig -llzma /Beacon/Test/afl-llvm-rt.o
 
