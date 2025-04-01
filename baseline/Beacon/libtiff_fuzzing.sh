@@ -42,8 +42,9 @@ clang libtiff_fuzzer_${BASENAME}_${LINENUM}.bc -o libtiff_fuzzer_${BASENAME}_${L
 
 # prepare the seeds
 mkdir in
-cp -r ../../../seeds/libtiff/corpus/tiff_read_rgba_fuzzer/* in/
+cp -r ../../../seed/libtiff/corpus/tiff_read_rgba_fuzzer/* in/
 # cp -r /Beacon/beacon_fuzzing/magma/targets/libtiff/corpus/tiff_read_rgba_fuzzer/* in/
+
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
 /Beacon/afl-fuzz -i in -o out -m none -t 99999+ -d -- ./libtiff_fuzzer_${BASENAME}_${LINENUM} @@
