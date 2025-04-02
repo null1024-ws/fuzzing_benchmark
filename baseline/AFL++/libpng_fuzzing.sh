@@ -27,7 +27,7 @@ rm -rf fuzzing
 mkdir fuzzing
 cd fuzzing
 mkdir in
-cp -r ../../seed/libpng/corpus/* in/
+cp -r ../../seed/libpng/corpus/libpng_read_fuzzer/* in/
 
 # start fuzzing
 export aflpp=~/afl++/afl-fuzz
