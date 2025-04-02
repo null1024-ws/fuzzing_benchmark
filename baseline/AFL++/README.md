@@ -16,11 +16,11 @@ Build Summary:
 ### Start fuzzing
 Once fetched, you can start fuzzing with different benchmarks. 
 
-- As [Magma](https://github.com/HexHive/magma) supports AFL++ fuzzer, please refer to the [wiki](https://hexhive.epfl.ch/magma/docs/getting-started.html) for detailed instructions.
+- As [Magma](https://github.com/HexHive/magma) supports AFL++ fuzzer, please refer to its [wiki](https://hexhive.epfl.ch/magma/docs/getting-started.html) for detailed instructions.
 
 - For [Unibench](https://github.com/unifuzz/unibench), first run the setup script to fetch the required projects and seeds with: 
 ```shell
-./set_unibench.sh (optionally, create a dedicated directory and copy all the scripts there before running). 
+./set_unibench.sh (optionally, create a dedicated directory and copy all the related scripts there before running). 
 ``` 
 Then, execute the coverage-based fuzzing script for your target binary. For example, to fuzz the `cflow` binary:
 ```
