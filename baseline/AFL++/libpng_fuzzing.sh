@@ -15,8 +15,8 @@
 cd libpng
 export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
 export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error -fsanitize=address"
-export CC=~/afl++/afl-cc
-export CXX=~/afl++/afl-c++
+export CC=~/afl++/afl-clang-fast
+export CXX=~/afl++/afl-clang-fast++
 autoconf -f -i
 ./configure --disable-shared
 make -j1 clean
