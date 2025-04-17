@@ -129,3 +129,4 @@ RUN UNIBENCH_SEED_URL="https://github.com/unifuzz/seeds.git" && \
         git clone $UNIBENCH_SEED_URL seeds; \
     fi
 RUN cp -r seeds/* ../
+RUN rm -rf seeds
