@@ -2,9 +2,10 @@
 set -e
 
 IMAGE_NAME="honggfuzz-env"
+# you may also add other projects from unibench
 TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
 THREADS=1
-TIMELIMIT=0
+TIMELIMIT=86400 # 24 hours
 
 # fuzzing args for different targets from unibench repo
 # id, prog, commandline, seed_folder
