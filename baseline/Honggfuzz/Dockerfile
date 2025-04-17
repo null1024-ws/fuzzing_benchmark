@@ -128,3 +128,4 @@ RUN UNIBENCH_SEED_URL="https://github.com/unifuzz/seeds.git" && \
     if [ ! -d "seeds" ]; then \
         git clone $UNIBENCH_SEED_URL seeds; \
     fi
+RUN cp -r seeds/* ../
