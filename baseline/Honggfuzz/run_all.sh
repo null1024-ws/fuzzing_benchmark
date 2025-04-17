@@ -2,7 +2,7 @@
 set -e
 
 IMAGE_NAME="honggfuzz-env"
-TARGETS=("cflow", "jhead", "lame", "mp3gain", "wav2swf")
+TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
 THREADS=1
 TIMELIMIT=0
 
