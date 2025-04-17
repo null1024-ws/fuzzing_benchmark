@@ -26,8 +26,6 @@ mkdir -p "$HOST_OUTPUT_DIR"
 # [4, "lame3.99.5", "@@ /dev/null", "lame3.99.5"],
 # [5, "jhead", "@@", "jhead"]
 
-
-
 for target in "${TARGETS[@]}"; do
     SAFE_NAME="${target//[^a-zA-Z0-9]/_}"  # For container and screen naming
     CONTAINER_NAME="hf_${SAFE_NAME}"
@@ -90,12 +88,11 @@ for target in "${TARGETS[@]}"; do
     docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR/findings"
 
     echo "[*] Launching honggfuzz in screen session for $target"
-
     docker exec "$CONTAINER_NAME" screen -dmS "fuzz_${SAFE_NAME}" bash -c "
             /honggfuzz/honggfuzz -n $THREADS -z --run_time $TIMELIMIT \
             --input \"$INPUT_DIR\" \
             --output \"$OUTPUT_DIR\" \
-            --workspace "$OUTPUT_DIR/findings" \
+            --workspace \"$OUTPUT_DIR/findings\" \
             -- \
             /d/p/honggfuzz/$target $ARGS
     "
