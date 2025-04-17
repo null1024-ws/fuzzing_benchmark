@@ -58,7 +58,11 @@ RUN git clone --no-checkout https://github.com/google/honggfuzz.git "$FUZZER" &&
  static struct {
 EOF
 
+# Build honggfuzz
+RUN cd "$FUZZER" && \
+    CC=clang CXX=clang++ make -j$(nproc)
 
+# Instrument
 ENV CC="$FUZZER/hfuzz_cc/hfuzz-clang"
 ENV CXX="$FUZZER/hfuzz_cc/hfuzz-clang++"
 
