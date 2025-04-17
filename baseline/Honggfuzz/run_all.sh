@@ -26,12 +26,14 @@ done
 HOST_OUTPUT_DIR="$(pwd)/results"
 mkdir -p "$HOST_OUTPUT_DIR"
 
+PIDS=()
 for target in "${TARGETS[@]}"; do
-    SAFE_NAME="${target//[^a-zA-Z0-9]/_}"  # For container and screen naming
+{
+    SAFE_NAME="${target//[^a-zA-Z0-9]/_}"
     echo "now is $SAFE_NAME"
     CONTAINER_NAME="hf_${SAFE_NAME}"
     BINARY_PATH="/d/p/honggfuzz/$target"
-    # Check the seeds directory
+
     if [[ "$target" == "mp3gain" ]]; then
         INPUT_DIR="/general_evaluation/mp3"
     elif [[ "$target" == "wav2swf" ]]; then
@@ -43,14 +45,12 @@ for target in "${TARGETS[@]}"; do
     fi
     echo "[*] Input directory: $INPUT_DIR"
     OUTPUT_DIR="/output/$SAFE_NAME"
-    
-    # solve name conflicts
+
     if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
         echo "[!] Removing existing container: $CONTAINER_NAME"
         docker rm -f "$CONTAINER_NAME"
     fi
 
-    # afl style fuzzing args
     case "$target" in
         "mp3gain")
             ARGS="@@"
@@ -69,11 +69,10 @@ for target in "${TARGETS[@]}"; do
             ;;
         *)
             echo "[*] Unknown target: $target"
-            continue
+            exit 0
             ;;
     esac
 
-    # replace to honggfuzz style fuzzing args
     if [[ ! "$ARGS" =~ " @@" ]]; then
         FUZZARGS="-s"
     fi
@@ -90,30 +89,33 @@ for target in "${TARGETS[@]}"; do
 
     echo "[*] Launching honggfuzz in screen session for $target"
     docker exec "$CONTAINER_NAME" screen -dmS "fuzz_${SAFE_NAME}" bash -c "
-            /honggfuzz/honggfuzz -n $THREADS -z --run_time $TIMELIMIT \
-            --input \"$INPUT_DIR\" \
-            --output \"$OUTPUT_DIR\" \
-            --workspace \"$OUTPUT_DIR/findings\" \
-            -- \
-            /d/p/honggfuzz/$target $ARGS
+        /honggfuzz/honggfuzz -n $THREADS -z --run_time $TIMELIMIT \
+        --input \"$INPUT_DIR\" \
+        --output \"$OUTPUT_DIR\" \
+        --workspace \"$OUTPUT_DIR/findings\" \
+        --verifier \
+        $FUZZARGS -- \
+        /d/p/honggfuzz/$target $ARGS
     "
 
-    echo "[*] Waiting for fuzzing to finish for $target (timelimit=$TIMELIMIT)..."
-    if [[ "$TIMELIMIT" -gt 0 ]]; then
-        sleep "$((TIMELIMIT + 5))"
-        echo "[*] Stopping container: $CONTAINER_NAME"
-        docker stop "$CONTAINER_NAME"
-    fi
+    sleep "$((TIMELIMIT + 5))"
+    echo "[*] Stopping container: $CONTAINER_NAME"
+    docker stop "$CONTAINER_NAME"
 
     echo "[*] Copying results from container to host..."
     docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR/$SAFE_NAME-output" || true
-    # docker cp "$CONTAINER_NAME:$OUTPUT_DIR/findings" "$HOST_OUTPUT_DIR/$SAFE_NAME-findings" || true
 
     echo "[*] Cleaning up container: $CONTAINER_NAME"
     docker rm -f "$CONTAINER_NAME" || true
 
     echo "[+] Done with $target"
     echo "-----------------------------"
+} &
+PIDS+=($!)
+done
+
+for pid in "${PIDS[@]}"; do
+    wait "$pid"
 done
 
 echo "[+] All fuzzing tasks completed."
