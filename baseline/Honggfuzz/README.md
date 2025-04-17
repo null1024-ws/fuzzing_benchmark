@@ -11,6 +11,7 @@ docker build -t honggfuzz-env .
 ./run_all.sh -n <threads_number> -t <time_limit_seconds>
 ```
 **Step3: Collect results**
+
 Fuzzing outputs will be saved in:
 ```bash
 <host_output_dir>/<target_name>-output/
