@@ -123,3 +123,8 @@ RUN cd /unibench/cflow-1.6 && ./configure &&\
 #     rm honggfuzz.tar.gz
 
 RUN ls -alh /d/p/*
+
+RUN UNIBENCH_SEED_URL="https://github.com/unifuzz/seeds.git" && \
+    if [ ! -d "seeds" ]; then \
+        git clone $UNIBENCH_SEED_URL seeds; \
+    fi
