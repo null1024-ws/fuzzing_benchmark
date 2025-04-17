@@ -28,6 +28,7 @@ mkdir -p "$HOST_OUTPUT_DIR"
 
 for target in "${TARGETS[@]}"; do
     SAFE_NAME="${target//[^a-zA-Z0-9]/_}"  # For container and screen naming
+    echo "now is $SAFE_NAME"
     CONTAINER_NAME="hf_${SAFE_NAME}"
     BINARY_PATH="/d/p/honggfuzz/$target"
     # Check the seeds directory
