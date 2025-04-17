@@ -20,4 +20,4 @@ To fuzz additional programs supported by Unibench, modify the following line in 
 ```shell
 TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
 ```
-Make sure to also add the corresponding fuzzing arguments for each new program in the script.
+Make sure to also add the corresponding [fuzzing arguments](https://github.com/unifuzz/unibench) for each new program in the script.
