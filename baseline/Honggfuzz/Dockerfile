@@ -5,7 +5,7 @@ FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Set environment variable for fuzzer work directory
-ENV FUZZER=/honggfuzz
+ENV FUZZER=honggfuzz
 
 # Install dependencies and set up clang/llvm-9
 RUN apt-get update && \
