@@ -1,70 +1,125 @@
-# Use Ubuntu as base image
-FROM ubuntu:18.04
+## claim: this script is from unibench_build repo
 
-# Avoid interactive prompts during package installation
-ENV DEBIAN_FRONTEND=noninteractive
+FROM zjuchenyuan/honggfuzz
+RUN git clone https://github.com/UNIFUZZ/unibench /unibench &&\
+    cd /unibench && \
+    mkdir mp3gain-1.5.2 && cd mp3gain-1.5.2 && mv ../mp3gain-1.5.2.zip ./ && unzip -q mp3gain-1.5.2.zip && rm mp3gain-1.5.2.zip && cd .. &&\
+    ls *.zip|xargs -i unzip -q '{}' &&\
+    ls *.tar.gz|xargs -i tar xf '{}' &&\
+    rm -r .git/ *.tar.gz *.zip &&\
+    mv SQLite-8a8ffc86 SQLite-3.8.9 && mv binutils_5279478 binutils-5279478 && mv libtiff-Release-v3-9-7 libtiff-3.9.7 &&\
+    ls -alh
+RUN mkdir -p /d/p/honggfuzz
 
-# Set environment variable for fuzzer work directory
-ENV FUZZER=honggfuzz
+# RUN cd /unibench/exiv2-0.26 && cmake -DEXIV2_ENABLE_SHARED=OFF . &&\
+#     make -j &&\ 
+#     cp bin/exiv2 /d/p/honggfuzz/ &&\
+#     make clean
 
-# Install dependencies and set up clang/llvm-9
-RUN apt-get update && \
-    apt-get install -y make git wget binutils-dev libunwind-dev \
-        clang-9 llvm-9-dev build-essential libblocksruntime-dev && \
-    update-alternatives \
-      --install /usr/lib/llvm              llvm             /usr/lib/llvm-9  20 \
-      --slave   /usr/bin/llvm-config       llvm-config      /usr/bin/llvm-config-9  \
-      --slave   /usr/bin/llvm-ar           llvm-ar          /usr/bin/llvm-ar-9 \
-      --slave   /usr/bin/llvm-as           llvm-as          /usr/bin/llvm-as-9 \
-      --slave   /usr/bin/llvm-bcanalyzer   llvm-bcanalyzer  /usr/bin/llvm-bcanalyzer-9 \
-      --slave   /usr/bin/llvm-c-test       llvm-c-test      /usr/bin/llvm-c-test-9 \
-      --slave   /usr/bin/llvm-cov          llvm-cov         /usr/bin/llvm-cov-9 \
-      --slave   /usr/bin/llvm-diff         llvm-diff        /usr/bin/llvm-diff-9 \
-      --slave   /usr/bin/llvm-dis          llvm-dis         /usr/bin/llvm-dis-9 \
-      --slave   /usr/bin/llvm-dwarfdump    llvm-dwarfdump   /usr/bin/llvm-dwarfdump-9 \
-      --slave   /usr/bin/llvm-extract      llvm-extract     /usr/bin/llvm-extract-9 \
-      --slave   /usr/bin/llvm-link         llvm-link        /usr/bin/llvm-link-9 \
-      --slave   /usr/bin/llvm-mc           llvm-mc          /usr/bin/llvm-mc-9 \
-      --slave   /usr/bin/llvm-nm           llvm-nm          /usr/bin/llvm-nm-9 \
-      --slave   /usr/bin/llvm-objdump      llvm-objdump     /usr/bin/llvm-objdump-9 \
-      --slave   /usr/bin/llvm-ranlib       llvm-ranlib      /usr/bin/llvm-ranlib-9 \
-      --slave   /usr/bin/llvm-readobj      llvm-readobj     /usr/bin/llvm-readobj-9 \
-      --slave   /usr/bin/llvm-rtdyld       llvm-rtdyld      /usr/bin/llvm-rtdyld-9 \
-      --slave   /usr/bin/llvm-size         llvm-size        /usr/bin/llvm-size-9 \
-      --slave   /usr/bin/llvm-stress       llvm-stress      /usr/bin/llvm-stress-9 \
-      --slave   /usr/bin/llvm-symbolizer   llvm-symbolizer  /usr/bin/llvm-symbolizer-9 \
-      --slave   /usr/bin/llvm-tblgen       llvm-tblgen      /usr/bin/llvm-tblgen-9 && \
-    update-alternatives \
-      --install /usr/bin/clang                 clang                  /usr/bin/clang-9     20 \
-      --slave   /usr/bin/clang++               clang++                /usr/bin/clang++-9 \
-      --slave   /usr/bin/clang-cpp             clang-cpp              /usr/bin/clang-cpp-9
+# RUN apt update && apt install -y libglib2.0-dev gtk-doc-tools libtiff-dev libpng-dev &&\
+#     cd /unibench/gdk-pixbuf-2.31.1 && ./autogen.sh --enable-static=yes --enable-shared=no --with-included-loaders=yes &&\
+#     make -j &&\
+#     cp gdk-pixbuf/gdk-pixbuf-pixdata /d/p/honggfuzz/ &&\
+#     make clean
 
-# Clone honggfuzz and apply patch
-RUN git clone --no-checkout https://github.com/google/honggfuzz.git "$FUZZER" && \
-    git -C "$FUZZER" checkout fc6b818c1276056bc565d07edec6ada784cd1670 && \
-    patch -p1 -d "$FUZZER" <<EOF
---- a/linux/trace.c
-+++ b/linux/trace.c
-@@ -232,8 +232,8 @@ struct user_regs_struct {
- #endif /* defined(__ANDROID__) */
+RUN cd /unibench/jasper-2.0.12 && cmake -DJAS_ENABLE_SHARED=OFF -DALLOW_IN_SOURCE_BUILD=ON . &&\
+    make -j &&\
+    cp src/appl/imginfo /d/p/honggfuzz/ &&\
+    make clean
 
- #if defined(__clang__)
--_Pragma("clang Diagnostic push\\n");
--_Pragma("clang Diagnostic ignored \\"-Woverride-init\\"\\n");
-+_Pragma("clang diagnostic push\\n");
-+_Pragma("clang diagnostic ignored \\"-Woverride-init\\"");
- #endif
+RUN cd /unibench/jhead-3.00 &&\
+    make -j &&\
+    cp jhead /d/p/honggfuzz/ &&\
+    make clean
 
- static struct {
-EOF
+# RUN cd /unibench/libtiff-3.9.7 && ./autogen.sh && ./configure --disable-shared &&\
+#     make -j &&\
+#     cp tools/tiffsplit /d/p/honggfuzz/ &&\
+#     make clean
 
-# Build honggfuzz
-RUN cd "$FUZZER" && \
-    CC=clang CXX=clang++ make -j$(nproc)
+RUN cd /unibench/lame-3.99.5 && ./configure --disable-shared &&\
+    make -j &&\
+    cp frontend/lame /d/p/honggfuzz/ &&\
+    make clean
 
-# Instrument
-ENV CC="$FUZZER/hfuzz_cc/hfuzz-clang"
-ENV CXX="$FUZZER/hfuzz_cc/hfuzz-clang++"
+RUN cd /unibench/mp3gain-1.5.2 && sed -i 's/CC=/CC?=/' Makefile &&\
+    make -j &&\
+    cp mp3gain /d/p/honggfuzz/ &&\
+    make clean
 
-# Default command
-CMD ["/bin/bash"]
+RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
+    sed -i 's/int inline ActionTagSize/int ActionTagSize/' ./lib/modules/swfaction.c &&\
+    sed -i 's/byte inline PaethPredictor/byte PaethPredictor/' ./src/png2swf.c &&\
+    make -j &&\
+    cp src/wav2swf /d/p/honggfuzz/ &&\
+    make clean
+
+# RUN cd /unibench/flvmeta-1.2.1 && cmake . &&\
+#     make -j &&\
+#     cp src/flvmeta /d/p/honggfuzz/ &&\
+#     make clean
+
+# RUN cd /unibench/Bento4-1.5.1-628 && cmake . &&\
+#     make -j &&\
+#     cp mp42aac /d/p/honggfuzz/ &&\
+#     make clean
+
+RUN cd /unibench/cflow-1.6 && ./configure &&\
+    make -j &&\
+    cp src/cflow /d/p/honggfuzz/ &&\
+    make clean
+
+# RUN cd /unibench/ncurses-6.1 && ./configure --disable-shared &&\
+#     make -j &&\
+#     cp progs/tic /d/p/honggfuzz/infotocap &&\
+#     make clean
+
+# RUN cd /unibench/jq-1.5 && ./configure --disable-shared &&\
+#     make -j &&\
+#     cp jq /d/p/honggfuzz/ &&\
+#     make clean
+
+# RUN cd /unibench/mujs-1.0.2 &&\
+#     build=debug make -j &&\
+#     cp build/debug/mujs /d/p/honggfuzz/ &&\
+#     make clean
+
+# RUN cd /unibench/xpdf-4.00 && cmake . &&\
+#     make -j &&\
+#     cp xpdf/pdftotext /d/p/honggfuzz/ &&\
+#     make clean
+
+# #--disable-amalgamation can be used for coverage build
+# RUN apt install -y tcl-dev &&\
+#     cd /unibench/SQLite-3.8.9 && ./configure --disable-shared &&\ 
+#     make -j &&\
+#     cp sqlite3 /d/p/honggfuzz/ &&\
+#     make clean
+
+# RUN cd /unibench/binutils-5279478 &&\
+#     ./configure --disable-shared &&\
+#     for i in bfd libiberty opcodes libctf; do cd $i; ./configure --disable-shared && make -j; cd ..; done  &&\
+#     cd binutils  &&\
+#     ./configure --disable-shared &&\
+#     make nm-new &&\
+#     cp nm-new /d/p/honggfuzz/nm &&\
+#     cd .. && make distclean
+
+# RUN cd /unibench/binutils-2.28 && ./configure --disable-shared &&\
+#     make -j &&\
+#     cp binutils/objdump /d/p/honggfuzz/ &&\
+#     make clean
+
+# RUN cd /unibench/libpcap-1.8.1 && ./configure --disable-shared &&\
+#     make -j &&\
+#     cd /unibench/tcpdump-4.8.1 && ./configure &&\
+#     make -j &&\
+#     cp tcpdump /d/p/honggfuzz/ &&\
+#     make clean && cd /unibench/libpcap-1.8.1 && make clean
+
+# this will add /d/p/honggfuzz/ffmpeg
+# RUN wget --quiet https://gitlab.com/unifuzz/unibench_build/raw/master/ffmpeg/honggfuzz.tar.gz &&\
+#     tar xf honggfuzz.tar.gz -C / &&\
+#     rm honggfuzz.tar.gz
+
+RUN ls -alh /d/p/*
