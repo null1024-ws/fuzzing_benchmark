@@ -33,6 +33,12 @@ for target in "${TARGETS[@]}"; do
         INPUT_DIR="/general_evaluation/$target"
     fi
     OUTPUT_DIR="/output/$SAFE_NAME"
+    
+    # solve name conflicts
+    if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
+        echo "[!] Removing existing container: $CONTAINER_NAME"
+        docker rm -f "$CONTAINER_NAME"
+    fi
 
     echo "[*] Starting container: $CONTAINER_NAME"
     docker run -dit \
@@ -44,7 +50,6 @@ for target in "${TARGETS[@]}"; do
     docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR/queue"
 
     echo "[*] Launching honggfuzz in screen session for $target"
-
     docker exec "$CONTAINER_NAME" screen -dmS "fuzz_${SAFE_NAME}" bash -c "
     ls
     "
