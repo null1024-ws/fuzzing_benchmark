@@ -5,8 +5,6 @@ As both Unibench and Magma support [honggfuzz](https://github.com/google/honggfu
 **Step 1: Build Docker Image**
 ```bash
 docker build -t honggfuzz-env .
-```bash
-docker build -t honggfuzz-env .
 ```
 **Step 2: Start fuzzing**
 ```bash
