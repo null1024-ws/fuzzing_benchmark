@@ -15,12 +15,13 @@ RUN mkdir -p /d/p/honggfuzz
 #     make -j &&\ 
 #     cp bin/exiv2 /d/p/honggfuzz/ &&\
 #     make clean
+RUN apt install -y screen
 
-# RUN apt update && apt install -y libglib2.0-dev gtk-doc-tools libtiff-dev libpng-dev &&\
-#     cd /unibench/gdk-pixbuf-2.31.1 && ./autogen.sh --enable-static=yes --enable-shared=no --with-included-loaders=yes &&\
-#     make -j &&\
-#     cp gdk-pixbuf/gdk-pixbuf-pixdata /d/p/honggfuzz/ &&\
-#     make clean
+RUN apt update && apt install -y libglib2.0-dev gtk-doc-tools libtiff-dev libpng-dev &&\
+    cd /unibench/gdk-pixbuf-2.31.1 && ./autogen.sh --enable-static=yes --enable-shared=no --with-included-loaders=yes &&\
+    make -j &&\
+    cp gdk-pixbuf/gdk-pixbuf-pixdata /d/p/honggfuzz/ &&\
+    make clean
 
 RUN cd /unibench/jasper-2.0.12 && cmake -DJAS_ENABLE_SHARED=OFF -DALLOW_IN_SOURCE_BUILD=ON . &&\
     make -j &&\
