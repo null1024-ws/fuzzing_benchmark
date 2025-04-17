@@ -6,6 +6,14 @@ TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
 THREADS=1
 TIMELIMIT=0
 
+# fuzzing args for different targets from unibench repo
+# id, prog, commandline, seed_folder
+# [1,"mp3gain","@@","mp3"],
+# [2,"wav2swf","-o /dev/null @@","wav"],
+# [3, "cflow", "@@", "cflow"],
+# [4, "lame3.99.5", "@@ /dev/null", "lame3.99.5"],
+# [5, "jhead", "@@", "jhead"]
+
 # Parse optional arguments
 while getopts "n:t:" opt; do
   case $opt in
@@ -17,14 +25,6 @@ done
 
 HOST_OUTPUT_DIR="$(pwd)/results"
 mkdir -p "$HOST_OUTPUT_DIR"
-
-# fuzzing args for different targets from unibench repo
-# id, prog, commandline, seed_folder
-# [1,"mp3gain","@@","mp3"],
-# [2,"wav2swf","-o /dev/null @@","wav"],
-# [3, "cflow", "@@", "cflow"],
-# [4, "lame3.99.5", "@@ /dev/null", "lame3.99.5"],
-# [5, "jhead", "@@", "jhead"]
 
 for target in "${TARGETS[@]}"; do
     SAFE_NAME="${target//[^a-zA-Z0-9]/_}"  # For container and screen naming
@@ -107,7 +107,7 @@ for target in "${TARGETS[@]}"; do
 
     echo "[*] Copying results from container to host..."
     docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR/$SAFE_NAME-output" || true
-    docker cp "$CONTAINER_NAME:$OUTPUT_DIR/findings" "$HOST_OUTPUT_DIR/$SAFE_NAME-findings" || true
+    # docker cp "$CONTAINER_NAME:$OUTPUT_DIR/findings" "$HOST_OUTPUT_DIR/$SAFE_NAME-findings" || true
 
     echo "[*] Cleaning up container: $CONTAINER_NAME"
     docker rm -f "$CONTAINER_NAME" || true
