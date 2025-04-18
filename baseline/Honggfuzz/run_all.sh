@@ -105,7 +105,8 @@ for target in "${TARGETS[@]}"; do
 
     echo "[*] Copying results from container to host..."
     docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR/$SAFE_NAME-output" || true
-
+    docker cp "$CONTAINER_NAME:$OUTPUT_DIR/findings" "$HOST_OUTPUT_DIR/$SAFE_NAME-findings" || true
+    
     echo "[*] Cleaning up container: $CONTAINER_NAME"
     docker rm -f "$CONTAINER_NAME" || true
 
