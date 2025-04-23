@@ -1,2 +1,2 @@
 ### Run Beacon
-Please the detailed instuctions [here](https://github.com/null1024-ws/Beacon-binary).
+Please follow the detailed instuctions [here](https://github.com/null1024-ws/Beacon-binary) for Magma benchmark.
