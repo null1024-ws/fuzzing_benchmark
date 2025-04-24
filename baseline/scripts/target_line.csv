@@ -1,0 +1,46 @@
+Benchmark,Project,Bug/CVE ID,Target Line (s),Target Line (m)
+Magma,libpng,PNG001,pngrutil.c:3181 ,"pngrutil.c:992 
+pngrutil.c:3187 
+pngrutil.c:3478 
+pngrutil.c:4643 
+pngrtran.c:1967"
+,,PNG003,pngrutil.c:992,
+,,PNG004,pngrutil.c:3457,
+,,PNG005,pngrutil.c:4606,
+,,PNG007,pngrtran.c:1967  ,
+,libtiff,TIF003,tif_read.c:493,"tif_read.c:493
+tif_dirwrite.c:2105
+tif_dirwrite.c:2118
+tif_dirread.c:5972
+tif_dirread.c:5986"
+,,TIF007,tif_dirread.c:5972,
+,,TIF009,tif_dirwrite.c:2105,
+,,TIF014,tif_dirread.c:5973,
+,libxml2,XML001,valid.c:1342 ,"valid.c:1342
+valid.c:1393
+parser.c:8406"
+,,XML006,valid.c:1374,
+,,XML017,parser.c:8406,
+,lua,LUA001,ldebug.c:193,"ldebug.c:197
+ldebug.c:848
+ldebug.c:920"
+,,LUA002,ldebug.c:832,
+,,LUA004,ldebug.c:902,
+Unibench,cflow,CVE-2020-23856,call (parser.c:1284),
+,,CVE-2019-16166,nexttoken (parser.c:302),
+,,CVE-2019-16165,reference (parser.c:1298),
+,wav2swf,CVE-2017-16890,wav_convert2mono (wav.c:206),
+,,CVE-2017-16793,wav_convert2mono (wav.c:243),
+,,CVE-2017-16868,wav_convert2mono (wav.c:225),
+,mp3gain,CVE-2017-14406,sync_buffer (interface.c:393),
+,,CVE-2017-14408,dct36 (layer3.c:1279),
+,,CVE-2017-14409,III_dequantize_sample (layer3.c:779),
+,,CVE-2017-14411,copy_mp (interface.c:188),
+,jhead,CVE-2018-6612,process_EXIF (exif.c:1021),
+,,CVE-2018-17088,ProcessGpsInfo (gpsinfo.c:104),
+,,CVE-2018-16554,ProcessGpsInfo (gpsinfo.c:164),
+,,CVE-2022-28550,shellescape (jhead.c:345),
+,lame,CVE-2017-13712,id3v2AddAudioDuration (id3tag.c:248),
+,, CVE-2017-15019,hip_decode_init (mpglib_interface.c:332),
+,,CVE-2015-9100,fill_buffer_resample (util.c:608),
+,,CVE-2017-15018,k_34_4 (vbrquantize.c:184),
