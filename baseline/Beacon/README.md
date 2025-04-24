@@ -13,7 +13,7 @@ echo "targets"
 grep -nr MAGMA_LOG | cut -f1,2 -d':' | grep -v ".orig:"  | grep -v "Binary file" > $OUT/cstest.txt
 cat $OUT/cstest.txt
 ```
-We provide a CSV file of target lines corresponding to the CVEs/bugs used in our evaluation. To perform directed fuzzing with Beacon, you can comment out the grep command above and directly specify the target line as shown below:
+We provide a [CSV file](https://github.com/null1024-ws/fuzzing_benchmark/blob/main/baseline/scripts/target_line.csv) of target lines corresponding to the CVEs/bugs used in our evaluation. To perform directed fuzzing with Beacon, you can comment out the grep command above and directly specify the target line as shown below:
 ```shell
 # grep -nr MAGMA_LOG | cut -f1,2 -d':' | grep -v ".orig:" | grep -v "Binary file" > $OUT/cstest.txt
 echo "pngrutil.c:3181" > $OUT/cstest.txt # Example: target line for bug PNG001 in the libpng project
