@@ -1,5 +1,5 @@
 ### Running Titan
-Titan leverages components of the static analysis module from [Beacon](https://github.com/5hadowblad3/Beacon_artifact), allowing experiments to be conducted within the Beacon Docker container. Follow the steps below to set up and run Titan for fuzzing. 
+Titan leverages components of the static analysis module from Beacon, allowing experiments to be conducted within the Beacon Docker container. Follow the steps below to set up and run Titan for fuzzing. 
 
 To fetch Titan, clone the repository from its repo using: 
 ```shell
@@ -7,9 +7,9 @@ git clone https://github.com/5hadowblad3/Titan.git
 ```
 Once fetched, you can start fuzzing with different benchmarks. 
 
-- For the [Magma Benchmark](https://github.com/HexHive/magma), refer to the `README` file in the [Titan](https://github.com/5hadowblad3/Titan) repository for detailed instructions. 
+- For the Magma benchmark, refer to the `README` file in the [Titan](https://github.com/5hadowblad3/Titan) repository for detailed instructions.
 
-- For [Unibench](https://github.com/unifuzz/unibench), first run the setup script to fetch the required projects and seeds with: 
+- For Unibench, first run the setup script to fetch the required projects and seeds with: 
 ```shell
 ./scripts/set_unibench.sh (optionally, create a dedicated directory and copy all the scripts there before running). 
 ``` 
