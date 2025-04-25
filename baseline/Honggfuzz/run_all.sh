@@ -2,10 +2,10 @@
 set -e
 
 IMAGE_NAME="honggfuzz-env"
-# you may also add other projects from unibench
 TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
 THREADS=1
 TIMELIMIT=86400 # 24 hours
+REPEAT=3
 
 # fuzzing args for different targets from unibench repo
 # id, prog, commandline, seed_folder
@@ -16,22 +16,23 @@ TIMELIMIT=86400 # 24 hours
 # [5, "jhead", "@@", "jhead"]
 
 # Parse optional arguments
-while getopts "n:t:" opt; do
+while getopts "n:t:r:" opt; do
   case $opt in
     n) THREADS="$OPTARG" ;;
     t) TIMELIMIT="$OPTARG" ;;
-    *) echo "Usage: $0 [-n threads] [-t timelimit_seconds]" >&2; exit 1 ;;
+    r) REPEAT="$OPTARG" ;;
+    *) echo "Usage: $0 [-n threads] [-t timelimit_seconds] [-r repeats]" >&2; exit 1 ;;
   esac
 done
 
-HOST_OUTPUT_DIR="$(pwd)/results"
+HOST_OUTPUT_DIR="$(pwd)/hf_unibench_results"
 mkdir -p "$HOST_OUTPUT_DIR"
 
 PIDS=()
-for target in "${TARGETS[@]}"; do
-{
-    SAFE_NAME="${target//[^a-zA-Z0-9]/_}"
-    echo "now is $SAFE_NAME"
+for ((r=1; r<=REPEAT; r++)); do
+  for target in "${TARGETS[@]}"; do
+  {
+    SAFE_NAME="${target//[^a-zA-Z0-9]/_}_run${r}"
     CONTAINER_NAME="hf_${SAFE_NAME}"
     BINARY_PATH="/d/p/honggfuzz/$target"
 
@@ -44,11 +45,9 @@ for target in "${TARGETS[@]}"; do
     else
         INPUT_DIR="/general_evaluation/$target"
     fi
-    echo "[*] Input directory: $INPUT_DIR"
     OUTPUT_DIR="/output/$SAFE_NAME"
 
     if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
-        echo "[!] Removing existing container: $CONTAINER_NAME"
         docker rm -f "$CONTAINER_NAME"
     fi
 
@@ -69,7 +68,6 @@ for target in "${TARGETS[@]}"; do
             ARGS="@@"
             ;;
         *)
-            echo "[*] Unknown target: $target"
             exit 0
             ;;
     esac
@@ -79,16 +77,13 @@ for target in "${TARGETS[@]}"; do
     fi
     ARGS="${ARGS/@@/___FILE___}"  
 
-    echo "[*] Starting container: $CONTAINER_NAME"
     docker run -dit \
         --name "$CONTAINER_NAME" \
         "$IMAGE_NAME" \
         bash
 
-    echo "[*] Creating output dir in container..."
     docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR/findings"
 
-    echo "[*] Launching honggfuzz in screen session for $target"
     docker exec "$CONTAINER_NAME" screen -dmS "fuzz_${SAFE_NAME}" bash -c "
         /honggfuzz/honggfuzz -n $THREADS -z --run_time $TIMELIMIT \
         --input \"$INPUT_DIR\" \
@@ -100,20 +95,15 @@ for target in "${TARGETS[@]}"; do
     "
 
     sleep "$((TIMELIMIT + 5))"
-    echo "[*] Stopping container: $CONTAINER_NAME"
     docker stop "$CONTAINER_NAME"
 
-    echo "[*] Copying results from container to host..."
     docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR/$SAFE_NAME-output" || true
     docker cp "$CONTAINER_NAME:$OUTPUT_DIR/findings" "$HOST_OUTPUT_DIR/$SAFE_NAME-findings" || true
-    
-    echo "[*] Cleaning up container: $CONTAINER_NAME"
-    docker rm -f "$CONTAINER_NAME" || true
 
-    echo "[+] Done with $target"
-    echo "-----------------------------"
-} &
-PIDS+=($!)
+    docker rm -f "$CONTAINER_NAME" || true
+  } &
+  PIDS+=($!)
+  done
 done
 
 for pid in "${PIDS[@]}"; do
@@ -121,3 +111,4 @@ for pid in "${PIDS[@]}"; do
 done
 
 echo "[+] All fuzzing tasks completed."
+
