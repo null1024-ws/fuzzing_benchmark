@@ -118,7 +118,7 @@ RUN cd /unibench/libpcap-1.8.1 && ./configure --disable-shared &&\
     cp tcpdump /d/p/honggfuzz/ &&\
     make clean && cd /unibench/libpcap-1.8.1 && make clean
 
-this will add /d/p/honggfuzz/ffmpeg
+# this will add /d/p/honggfuzz/ffmpeg
 RUN wget --quiet https://gitlab.com/unifuzz/unibench_build/raw/master/ffmpeg/honggfuzz.tar.gz &&\
     tar xf honggfuzz.tar.gz -C / &&\
     rm honggfuzz.tar.gz
