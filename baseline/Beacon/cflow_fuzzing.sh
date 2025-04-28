@@ -39,8 +39,8 @@ clang cflow_${BASENAME}_${LINENUM}.bc -o cflow_${BASENAME}_${LINENUM} -lm -lz /B
 
 # prepare the seeds
 mkdir in
-cp -r ../../seeds/general_evaluation/cflow/* in/ 
+cp -r seeds/general_evaluation/cflow/* in/ 
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-/Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./cflow_${BASENAME}_${LINENUM} @@
+timeout 24h /Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./cflow_${BASENAME}_${LINENUM} @@
