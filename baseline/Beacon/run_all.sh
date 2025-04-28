@@ -22,12 +22,19 @@ run_fuzzing() {
     CONTAINER_NAME="${SAFE_NAME}_${TARGET_LINE_SAFE}_repeat${repeat_num}" 
     echo "Starting fuzzing for $target at $target_line (Repeat $repeat_num) in container $CONTAINER_NAME"
 
+    if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
+        docker rm -f "$CONTAINER_NAME"
+    fi
+
     FUZZING_SCRIPT="${target}_fuzzing.sh"
     docker run --name "$CONTAINER_NAME" --rm -v $(pwd):/workspace "$IMAGE_NAME" \
-        /bin/bash -c "./$FUZZING_SCRIPT $target_line"
+        /bin/bash -c "./$FUZZING_SCRIPT $target_line" &
 
     mkdir -p "./results/$SAFE_NAME"
-    docker cp "$CONTAINER_NAME:/workspace/results" "./results/$SAFE_NAME/${TARGET_LINE_SAFE}_repeat${repeat_num}_results"
+    docker cp "$CONTAINER_NAME:/workspace/results" "./results/$SAFE_NAME/${TARGET_LINE_SAFE}_repeat${repeat_num}_results" &
+
+    # clean
+    # docker rm -f "$CONTAINER_NAME" || true
 
     echo "Results for $target at $target_line (Repeat $repeat_num) saved in ./results/$SAFE_NAME/${TARGET_LINE_SAFE}_repeat${repeat_num}_results"
 }
@@ -66,3 +73,6 @@ for target in "${TARGETS[@]}"; do
         done
     done
 done
+
+# Wait for all background jobs to complete
+wait
