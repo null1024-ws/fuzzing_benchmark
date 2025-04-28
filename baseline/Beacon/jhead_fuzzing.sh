@@ -40,7 +40,7 @@ clang jhead_${BASENAME}_${LINENUM}.bc -o jhead_${BASENAME}_${LINENUM} -lm -lz /B
 
 # prepare the seeds
 mkdir in
-cp -r seeds/general_evaluation/jhead/* in/ 
+cp -r /seeds/general_evaluation/jhead/* in/ 
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
