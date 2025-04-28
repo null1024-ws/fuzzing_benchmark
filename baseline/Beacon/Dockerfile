@@ -24,5 +24,5 @@ RUN set -e && \
     fi && \
     echo "Fetch the unibench and seeds successfully!"
 
-RUN git clone  https://github.com/null1024-ws/fuzzing_benchmark.git
+RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git
 RUN cp /fuzzing_benchmark/baseline/Beacon/*.sh ./
