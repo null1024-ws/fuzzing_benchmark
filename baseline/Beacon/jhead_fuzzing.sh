@@ -11,6 +11,7 @@ fi
 rm -rf jhead-3.00
 tar -xvf jhead-3.00.tar.gz
 
+mkdir -p fuzz_output
 # get the bc file
 cd jhead-3.00
 
@@ -44,4 +45,4 @@ cp -r /seeds/general_evaluation/jhead/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-timeout 24h /Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./jhead_${BASENAME}_${LINENUM} @@
+timeout 24h /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./jhead_${BASENAME}_${LINENUM} @@
