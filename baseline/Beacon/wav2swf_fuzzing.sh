@@ -24,10 +24,7 @@ export LLVM_COMPILER=clang
 ./configure
 make clean
 make
-
 extract-bc src/wav2swf
-
-
 
 mkdir -p wav2swf_fuzzing
 cd wav2swf_fuzzing
