@@ -11,8 +11,6 @@ fi
 rm -rf cflow-1.6
 tar -xvf cflow-1.6.tar.gz
 
-mkdir -p fuzz_output
-
 # get the bc file
 cd cflow-1.6
 export CC=wllvm 
