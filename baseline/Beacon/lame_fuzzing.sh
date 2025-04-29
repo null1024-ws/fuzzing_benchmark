@@ -11,7 +11,6 @@ fi
 rm -rf lame-3.99.5
 tar -xvf lame-3.99.5.tar.gz
 
-mkdir -p fuzz_output
 # compile
 cd lame-3.99.5
 export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
