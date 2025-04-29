@@ -11,6 +11,8 @@ fi
 rm -rf cflow-1.6
 tar -xvf cflow-1.6.tar.gz
 
+mkdir -p fuzz_output
+
 # get the bc file
 cd cflow-1.6
 export CC=wllvm 
@@ -43,5 +45,4 @@ cp -r /seeds/general_evaluation/cflow/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-timeout 10m /Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./cflow_${BASENAME}_${LINENUM} @@
-cp -r out/* /fuzz_output/
+timeout 3m /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./cflow_${BASENAME}_${LINENUM} @@
