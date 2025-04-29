@@ -11,7 +11,6 @@ fi
 rm -rf jhead-3.00
 tar -xvf jhead-3.00.tar.gz
 
-mkdir -p fuzz_output
 # get the bc file
 cd jhead-3.00
 
