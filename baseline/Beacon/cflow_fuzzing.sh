@@ -43,5 +43,5 @@ cp -r /seeds/general_evaluation/cflow/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-timeout 24h /Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./cflow_${BASENAME}_${LINENUM} @@
+timeout 10m /Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./cflow_${BASENAME}_${LINENUM} @@
 cp -r out/* /workspace/results/
