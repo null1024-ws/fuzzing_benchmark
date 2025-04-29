@@ -11,6 +11,7 @@ fi
 rm -rf lame-3.99.5
 tar -xvf lame-3.99.5.tar.gz
 
+mkdir -p fuzz_output
 # compile
 cd lame-3.99.5
 export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
@@ -45,4 +46,4 @@ cp -r /seeds/general_evaluation/lame3.99.5/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-timeout 24h /Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./lame_${BASENAME}_${LINENUM} @@ /dev/null
+timeout 24h /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./lame_${BASENAME}_${LINENUM} @@ /dev/null
