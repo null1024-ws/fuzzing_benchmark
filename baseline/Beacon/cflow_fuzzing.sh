@@ -16,9 +16,11 @@ cd cflow-1.6
 export CC=wllvm 
 export CXX=wllvm++
 export LLVM_COMPILER=clang
+export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 ./configure
 make clean
-make CFLAGS="-g" # mandatory flags
+make
 extract-bc src/cflow
 
 mkdir -p cflow_fuzzing
