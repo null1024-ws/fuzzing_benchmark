@@ -17,10 +17,9 @@ cd jhead-3.00
 export CC=wllvm
 export CXX=wllvm++
 export LLVM_COMPILER=clang
-export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
-export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+
 make clean
-make
+make CFLAGS="-g" -j # mandatory flags
 extract-bc jhead
 
 mkdir -p jhead_fuzzing
@@ -41,8 +40,8 @@ clang jhead_${BASENAME}_${LINENUM}.bc -o jhead_${BASENAME}_${LINENUM} -lm -lz /B
 
 # prepare the seeds
 mkdir in
-cp -r /seeds/general_evaluation/jhead/* in/ 
+cp -r seeds/general_evaluation/jhead/* in/ 
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-timeout 24h /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./jhead_${BASENAME}_${LINENUM} @@
+timeout 24h /Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./jhead_${BASENAME}_${LINENUM} @@

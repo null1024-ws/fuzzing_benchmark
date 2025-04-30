@@ -1,11 +1,12 @@
 #!/bin/bash
 set -e 
 IMAGE_NAME="beacon-env"
-TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
+TARGETS=("wav2swf" "mp3gain" "jhead" "lame")
+TIMELIMIT=86400 # 24 hours
 REPEAT=3
 
 # target lines for each program
-cflow_targets=("parser.c:1284" "parser.c:302" "parser.c:1298")
+# cflow_targets=("parser.c:1284" "parser.c:302" "parser.c:1298")
 wav2swf_targets=("wav.c:206" "wav.c:243" "wav.c:225")
 mp3gain_targets=("interface.c:393" "layer3.c:1279" "layer3.c:779" "interface.c:188")
 jhead_targets=("exif.c:1021" "gpsinfo.c:104" "gpsinfo.c:164" "jhead.c:345")
@@ -23,23 +24,24 @@ run_fuzzing() {
     echo "Starting fuzzing for $target at $target_line (Repeat $repeat_num) in container $CONTAINER_NAME"
 
     if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
-        docker rm -f "$CONTAINER_NAME"
+       docker rm -f "$CONTAINER_NAME"
     fi
 
-    FUZZING_SCRIPT="${target}_fuzzing.sh"
-    docker run --name "$CONTAINER_NAME" --rm -v $(pwd):/workspace "$IMAGE_NAME" \
-        /bin/bash -c "./$FUZZING_SCRIPT $target_line" &
-
-    mkdir -p "./results/$SAFE_NAME"
-    docker cp "$CONTAINER_NAME:/workspace/results" "./results/$SAFE_NAME/${TARGET_LINE_SAFE}_repeat${repeat_num}_results" &
-
-    # clean
-    # docker rm -f "$CONTAINER_NAME" || true
+    OUTPUT_DIR="/fuzz_output"
+    HOST_OUTPUT_DIR="./results/$SAFE_NAME/${TARGET_LINE_SAFE}_repeat${repeat_num}_results"
+ 
+    docker run -dit --name "$CONTAINER_NAME" "$IMAGE_NAME" bash
+    docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR"
+    docker exec "$CONTAINER_NAME" screen -dmS "fuzz_$SAFE_NAME" bash -c "./${target}_fuzzing.sh $target_line"
+    sleep "$((TIMELIMIT + 5))"
+    docker stop "$CONTAINER_NAME"
+    mkdir -p "$HOST_OUTPUT_DIR"
+    docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR" || true
 
     echo "Results for $target at $target_line (Repeat $repeat_num) saved in ./results/$SAFE_NAME/${TARGET_LINE_SAFE}_repeat${repeat_num}_results"
 }
 
-
+# Parallel fuzzing for all targets and target lines
 for target in "${TARGETS[@]}"; do
     echo "Starting fuzzing for target: $target"
 
@@ -69,7 +71,7 @@ for target in "${TARGETS[@]}"; do
     # Run fuzzing for each target line
     for target_line in "${target_lines[@]}"; do
         for repeat_num in $(seq 1 "$REPEAT"); do
-            run_fuzzing "$target" "$target_line" "$repeat_num"
+            run_fuzzing "$target" "$target_line" "$repeat_num" &
         done
     done
 done

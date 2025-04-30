@@ -1,6 +1,6 @@
 FROM yguoaz/beacon
 
-RUN apt-get update && apt-get install -y git python3 python3-dev python3-pip
+RUN apt-get update && apt-get install -y git python3 python3-dev python3-pip screen
 RUN apt install libncurses-dev
 RUN pip3 install --upgrade pip && pip3 install wllvm
 
@@ -26,3 +26,4 @@ RUN set -e && \
 
 RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git
 RUN cp /fuzzing_benchmark/baseline/Beacon/*.sh ./
+RUN ls ./*.sh && sleep 10

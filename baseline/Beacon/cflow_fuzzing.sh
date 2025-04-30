@@ -16,11 +16,9 @@ cd cflow-1.6
 export CC=wllvm 
 export CXX=wllvm++
 export LLVM_COMPILER=clang
-export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
-export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 ./configure
 make clean
-make
+make CFLAGS="-g" # mandatory flags
 extract-bc src/cflow
 
 mkdir -p cflow_fuzzing
@@ -41,8 +39,8 @@ clang cflow_${BASENAME}_${LINENUM}.bc -o cflow_${BASENAME}_${LINENUM} -lm -lz /B
 
 # prepare the seeds
 mkdir in
-cp -r /seeds/general_evaluation/cflow/* in/ 
+cp -r seeds/general_evaluation/cflow/* in/ 
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-timeout 24h /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./cflow_${BASENAME}_${LINENUM} @@
+timeout 24h /Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./cflow_${BASENAME}_${LINENUM} @@
