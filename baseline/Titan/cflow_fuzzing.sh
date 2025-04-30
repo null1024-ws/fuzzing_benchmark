@@ -47,9 +47,9 @@ SEEDS_DIR="in"
 if [ ! -d "$SEEDS_DIR" ]; then
     mkdir "$SEEDS_DIR"
 fi
-cp -r ../../seeds/general_evaluation/cflow/* "$SEEDS_DIR/"
+cp -r /seeds/general_evaluation/cflow/* "$SEEDS_DIR/"
 
 # Start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you may comment this line
-"$REPO_DIR/afl-fuzz" -i "$SEEDS_DIR" -o out -m none -t 99999 -s ./bug_conf_cluster -k ./bug_over_cluster -d -- ./"$BIN_NAME" @@
+timeout 24h "$REPO_DIR/afl-fuzz" -i "$SEEDS_DIR" -o /fuzz_output -m none -t 99999 -s ./bug_conf_cluster -k ./bug_over_cluster -d -- ./"$BIN_NAME" @@
 
