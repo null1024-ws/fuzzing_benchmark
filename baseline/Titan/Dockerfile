@@ -26,5 +26,5 @@ RUN set -e && \
 
 RUN git clone https://github.com/5hadowblad3/Titan.git
 RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git
-RUN cp /fuzzing_benchmark/baseline/Beacon/*.sh ./
+RUN cp /fuzzing_benchmark/baseline/Titan/*.sh ./
 RUN ls ./*.sh
