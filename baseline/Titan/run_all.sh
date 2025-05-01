@@ -2,10 +2,9 @@
 
 set -e 
 IMAGE_NAME="titan-env"
-# TARGETS=("cflow" "wav2swf" "mp3gain" "jhead" "lame")
-TARGETS=("jhead")
-TIMELIMIT=300 # 24 hours
-REPEAT=1
+TARGETS=("cflow" "wav2swf" "mp3gain" "jhead" "lame")
+TIMELIMIT=86400 # 24 hours
+REPEAT=3
 
 # target lines for each program
 cflow_targets=("parser.c:1284" "parser.c:302" "parser.c:1298")
@@ -14,69 +13,49 @@ mp3gain_targets=("interface.c:393" "layer3.c:1279" "layer3.c:779" "interface.c:1
 jhead_targets=("exif.c:1021" "gpsinfo.c:104" "gpsinfo.c:164" "jhead.c:345")
 lame_targets=("id3tag.c:248" "mpglib_interface.c:332" "util.c:608" "vbrquantize.c:184")
 
-# Function to run fuzzing for all lines of a single target
+# Function to run fuzzing for one repeat
 run_fuzzing() {
     local target="$1"
-    shift
+    local repeat_num="$2"
+    shift 2
     local target_lines=("$@")
-    
-    for repeat_num in $(seq 1 "$REPEAT"); do
-        SAFE_NAME="${target//[^a-zA-Z0-9]/_}"
-        
-        # Combine all target lines into a single safe string
-        TARGET_LINES_JOINED=$(IFS=','; echo "${target_lines[*]}")
-        TARGET_LINES_SAFE=$(echo "$TARGET_LINES_JOINED" | sed 's/[:\/.,]/_/g')
 
-        CONTAINER_NAME="${SAFE_NAME}_${TARGET_LINES_SAFE}_repeat${repeat_num}" 
-        echo "Starting fuzzing for $target at [${TARGET_LINES_JOINED}] (Repeat $repeat_num) in container $CONTAINER_NAME"
+    SAFE_NAME="${target//[^a-zA-Z0-9]/_}"
+    TARGET_LINES_JOINED=$(IFS=','; echo "${target_lines[*]}")
+    TARGET_LINES_SAFE=$(echo "$TARGET_LINES_JOINED" | sed 's/[:\/.,]/_/g')
+    CONTAINER_NAME="${SAFE_NAME}_${TARGET_LINES_SAFE}_repeat${repeat_num}" 
 
-        if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
-           docker rm -f "$CONTAINER_NAME"
-        fi
+    echo "Starting fuzzing for $target at [${TARGET_LINES_JOINED}] (Repeat $repeat_num) in container $CONTAINER_NAME"
 
-        OUTPUT_DIR="/fuzz_output"
-        HOST_OUTPUT_DIR="./results/$SAFE_NAME/${TARGET_LINES_SAFE}_repeat${repeat_num}_results"
+    if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
+       docker rm -f "$CONTAINER_NAME"
+    fi
 
-        docker run -dit --name "$CONTAINER_NAME" "$IMAGE_NAME" bash
-        docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR"
+    OUTPUT_DIR="/fuzz_output"
+    HOST_OUTPUT_DIR="./results/$SAFE_NAME/${TARGET_LINES_SAFE}_repeat${repeat_num}_results"
 
-        # Construct the fuzzing command with multiple target lines
-        CMD="./${target}_fuzzing.sh ${target_lines[*]}"
-        docker exec "$CONTAINER_NAME" screen -dmS "fuzz_$SAFE_NAME" bash -c "$CMD"
+    docker run -dit --name "$CONTAINER_NAME" "$IMAGE_NAME" bash
+    docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR"
 
-        sleep "$((TIMELIMIT + 5))"
-        docker stop "$CONTAINER_NAME"
-        mkdir -p "$HOST_OUTPUT_DIR"
-        docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR" || true
+    CMD="./${target}_fuzzing.sh ${target_lines[*]}"
+    docker exec "$CONTAINER_NAME" screen -dmS "fuzz_$SAFE_NAME" bash -c "$CMD"
 
-        echo "Results for $target at [${TARGET_LINES_JOINED}] (Repeat $repeat_num) saved in $HOST_OUTPUT_DIR"
-    done
+    sleep "$((TIMELIMIT + 5))"
+    docker stop "$CONTAINER_NAME"
+    mkdir -p "$HOST_OUTPUT_DIR"
+    docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR" || true
+
+    echo "Results for $target at [${TARGET_LINES_JOINED}] (Repeat $repeat_num) saved in $HOST_OUTPUT_DIR"
 }
 
 # Main execution
 for target in "${TARGETS[@]}"; do
     echo "Starting fuzzing for target: $target"
 
-    case $target in
-        "cflow")
-            run_fuzzing "$target" "${cflow_targets[@]}" &
-            ;;
-        "wav2swf")
-            run_fuzzing "$target" "${wav2swf_targets[@]}" &
-            ;;
-        "mp3gain")
-            run_fuzzing "$target" "${mp3gain_targets[@]}" &
-            ;;
-        "jhead")
-            run_fuzzing "$target" "${jhead_targets[@]}" &
-            ;;
-        "lame")
-            run_fuzzing "$target" "${lame_targets[@]}" &
-            ;;
-        *)
-            echo "Unknown target $target, skipping..."
-            ;;
-    esac
+    target_lines_var="${target}_targets[@]"
+    for repeat_num in $(seq 1 "$REPEAT"); do
+        run_fuzzing "$target" "$repeat_num" "${!target_lines_var}" &
+    done
 done
 
 wait
