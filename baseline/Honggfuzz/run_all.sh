@@ -3,6 +3,7 @@ set -e
 
 IMAGE_NAME="honggfuzz-env"
 TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
+# TARGETS=("lame")
 THREADS=1
 TIMELIMIT=86400 # 24 hours
 REPEAT=3
@@ -89,7 +90,6 @@ for ((r=1; r<=REPEAT; r++)); do
         --input \"$INPUT_DIR\" \
         --output \"$OUTPUT_DIR\" \
         --workspace \"$OUTPUT_DIR/findings\" \
-        --verifier \
         $FUZZARGS -- \
         /d/p/honggfuzz/$target $ARGS
     "
@@ -111,4 +111,3 @@ for pid in "${PIDS[@]}"; do
 done
 
 echo "[+] All fuzzing tasks completed."
-
