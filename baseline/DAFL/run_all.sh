@@ -2,7 +2,8 @@
 set -e
 
 IMAGE_NAME="dafl-env"
-TARGETS=("cflow" "jhead" "lame" "mp3gain")
+# TARGETS=("cflow" "jhead" "lame" "mp3gain")
+TARGETS=("cflow")
 TIMELIMIT=180 # 24 hours
 REPEAT=3
 
@@ -71,6 +72,7 @@ for ((r=1; r<=REPEAT; r++)); do
 
         docker exec "$CONTAINER_NAME" screen -dmS "fuzz_${SAFE_NAME}" bash -c "
             timeout 180s /fuzzer/DAFL/afl-fuzz \
+	    -m none \
             -i \"$INPUT_DIR\" \
             -o \"$OUTPUT_DIR\" \
             -- \"$BINARY_PATH\" $ARGS
