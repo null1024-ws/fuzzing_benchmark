@@ -2,6 +2,7 @@ FROM prosyslab/dafl-artifact
 WORKDIR /root
 
 RUN apt update && apt install -y screen
+# clone unibench
 RUN git clone https://github.com/UNIFUZZ/unibench /unibench &&\
     cd /unibench && \
     mkdir mp3gain-1.5.2 && cd mp3gain-1.5.2 && mv ../mp3gain-1.5.2.zip ./ && unzip -q mp3gain-1.5.2.zip && rm mp3gain-1.5.2.zip && cd .. &&\
@@ -12,7 +13,7 @@ RUN git clone https://github.com/UNIFUZZ/unibench /unibench &&\
     ls -alh
 
 
-# Clone seeds
+# clone seeds
 RUN set -e && \
     UNIBENCH_SEED_URL="https://github.com/unifuzz/seeds.git" && \
     if [ ! -d "seeds" ]; then \
@@ -31,9 +32,9 @@ ENV CC=/fuzzer/DAFL/afl-clang-fast
 # CVE-2019-16165 parser.c:1298
 # CVE-2019-16166 parser.c:302
 # CVE-2020-23856 parser.c:1284
-RUN mkdir /d/p/dafl/cflow/parser_1298 && \
-    mkdir /d/p/dafl/cflow/parser_302 && \
-    mkdir /d/p/dafl/cflow/parser_1284
+RUN mkdir -p /d/p/dafl/cflow/parser_1298 && \
+    mkdir -p /d/p/dafl/cflow/parser_302 && \
+    mkdir -p /d/p/dafl/cflow/parser_1284
 
 RUN cd /unibench/cflow-1.6 && ./configure &&\
     export DAFL_DFG_SCORE="/DAFL-input/dfg/cflow/CVE-2019-16165" &&\
@@ -58,9 +59,9 @@ RUN cd /unibench/cflow-1.6 && make clean && \
 # CVE-2017-16868 wav.c:225
 # CVE-2017-16890 wav.c:206
 
-RUN mkdir /d/p/dafl/wav/wav_243 && \
-    mkdir /d/p/dafl/wav/wav_225 && \
-    mkdir /d/p/dafl/wav/wav_206
+RUN mkdir -p /d/p/dafl/wav/wav_243 && \
+    mkdir -p /d/p/dafl/wav/wav_225 && \
+    mkdir -p /d/p/dafl/wav/wav_206
 
 RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
     sed -i 's/int inline ActionTagSize/int ActionTagSize/' ./lib/modules/swfaction.c &&\
@@ -92,10 +93,10 @@ RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
 # CVE-2017-14408 layer3.c:1279
 # CVE-2017-14409 layer3.c:779
 # CVE-2017-14411 interface.c:188
-RUN mkdir /d/p/dafl/mp3gain/interface_393 && \
-    mkdir /d/p/dafl/mp3gain/layer3_1279 && \
-    mkdir /d/p/dafl/mp3gain/layer3_779 && \
-    mkdir /d/p/dafl/mp3gain/interface_188
+RUN mkdir -p /d/p/dafl/mp3gain/interface_393 && \
+    mkdir -p /d/p/dafl/mp3gain/layer3_1279 && \
+    mkdir -p /d/p/dafl/mp3gain/layer3_779 && \
+    mkdir -p /d/p/dafl/mp3gain/interface_188
 
 RUN cd /unibench/mp3gain-1.5.2 && sed -i 's/CC=/CC?=/' Makefile &&\
     export DAFL_DFG_SCORE="/DAFL-input/dfg/mp3gain/CVE-2017-14406" &&\
@@ -130,11 +131,10 @@ RUN cd /unibench/mp3gain-1.5.2 && sed -i 's/CC=/CC?=/' Makefile &&\
 # CVE-2018-16554 gpsinfo.c:164
 # CVE-2022-28550 jhead.c:345
 
-RUN mkdir /d/p/dafl/jhead/exif_1021 && \
-    mkdir /d/p/dafl/jhead/gpsinfo_104 && \
-    mkdir /d/p/dafl/jhead/gpsinfo_164 && \
-    mkdir /d/p/dafl/jhead/jhead_345
-
+RUN mkdir -p /d/p/dafl/jhead/exif_1021 && \
+    mkdir -p /d/p/dafl/jhead/gpsinfo_104 && \
+    mkdir -p /d/p/dafl/jhead/gpsinfo_164 && \
+    mkdir -p /d/p/dafl/jhead/jhead_345
 
 RUN cd /unibench/jhead-3.00 &&\
     export DAFL_DFG_SCORE="/DAFL-input/dfg/jhead/CVE-2018-6612" &&\
@@ -164,15 +164,15 @@ RUN cd /unibench/jhead-3.00 &&\
     make -j &&\
     cp jhead /d/p/dafl/jhead/jhead_345
 
-#  lame
+# lame
 # CVE-2017-13712 id3tag.c:248
 # CVE-2017-15019 mpglib_interface.c:332
 # CVE-2015-9100	util.c:608
 # CVE-2017-15018 vbrquantize.c:184
-RUN mkdir /d/p/dafl/lame/id3tag_248 && \
-    mkdir /d/p/dafl/lame/mpglib_332 && \
-    mkdir /d/p/dafl/lame/util_608 && \
-    mkdir /d/p/dafl/lame/vbrquantize_184
+RUN mkdir -p /d/p/dafl/lame/id3tag_248 && \
+    mkdir -p /d/p/dafl/lame/mpglib_332 && \
+    mkdir -p /d/p/dafl/lame/util_608 && \
+    mkdir -p /d/p/dafl/lame/vbrquantize_184
 
 RUN cd /unibench/lame-3.99.5 && ./configure --disable-shared &&\
     export DAFL_DFG_SCORE="/DAFL-input/dfg/lame/CVE-2017-13712" &&\
