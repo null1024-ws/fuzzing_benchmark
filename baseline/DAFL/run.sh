@@ -83,10 +83,10 @@ for ((r=1; r<=REPEAT; r++)); do
 
         # Set input dir based on target
         case "$target" in
-            "mp3gain") INPUT_DIR="/general_evaluation/mp3" ;;
-            "wav2swf") INPUT_DIR="/general_evaluation/wav" ;;
-            "lame") INPUT_DIR="/general_evaluation/lame3.99.5" ;;
-            *) INPUT_DIR="/general_evaluation/$target" ;;
+            "mp3gain") INPUT_DIR="/seeds/general_evaluation/mp3" ;;
+            "wav2swf") INPUT_DIR="/seeds/general_evaluation/wav" ;;
+            "lame") INPUT_DIR="/seeds/general_evaluation/lame3.99.5" ;;
+            *) INPUT_DIR="/seeds/general_evaluation/$target" ;;
         esac
 
         # Set fuzzing args
@@ -141,7 +141,7 @@ for ((r=1; r<=REPEAT; r++)); do
         # Remove container
         docker rm -f "$CONTAINER_NAME" > /dev/null 2>&1 || true
         log_msg "Task completed for $target/$TARGET_LOC (Run $r)"
-        return 0
+        # return 0
       ) &
       PIDS+=($!)
     done
