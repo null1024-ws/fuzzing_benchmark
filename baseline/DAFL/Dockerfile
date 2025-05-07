@@ -40,7 +40,7 @@ RUN cd /unibench/cflow-1.6 && ./configure &&\
     export DAFL_DFG_SCORE="/DAFL-input/dfg/cflow/CVE-2019-16165" &&\
     export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/cflow/CVE-2019-16165" &&\
     make -j &&\
-    cp src/cflow /d/p/cflow/parser_1298
+    cp src/cflow /d/p/dafl/cflow/parser_1298
 
 RUN cd /unibench/cflow-1.6 && make clean && \
     export DAFL_DFG_SCORE="/DAFL-input/dfg/cflow/CVE-2019-16166" && \
