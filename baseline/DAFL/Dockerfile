@@ -59,34 +59,34 @@ RUN cd /unibench/cflow-1.6 && make clean && \
 # CVE-2017-16868 wav.c:225
 # CVE-2017-16890 wav.c:206
 
-RUN mkdir -p /d/p/dafl/wav/wav_243 && \
-    mkdir -p /d/p/dafl/wav/wav_225 && \
-    mkdir -p /d/p/dafl/wav/wav_206
+# RUN mkdir -p /d/p/dafl/wav/wav_243 && \
+#     mkdir -p /d/p/dafl/wav/wav_225 && \
+#     mkdir -p /d/p/dafl/wav/wav_206
 
-RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
-    sed -i 's/int inline ActionTagSize/int ActionTagSize/' ./lib/modules/swfaction.c &&\
-    sed -i 's/byte inline PaethPredictor/byte PaethPredictor/' ./src/png2swf.c &&\
-    export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16793" &&\
-    export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16793" &&\
-    make -j &&\
-    cp src/wav2swf /d/p/dafl/wav/wav_243 &&\
-    make clean
+# RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
+#     sed -i 's/int inline ActionTagSize/int ActionTagSize/' ./lib/modules/swfaction.c &&\
+#     sed -i 's/byte inline PaethPredictor/byte PaethPredictor/' ./src/png2swf.c &&\
+#     export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16793" &&\
+#     export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16793" &&\
+#     make -j &&\
+#     cp src/wav2swf /d/p/dafl/wav/wav_243 &&\
+#     make clean
 
-RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
-    export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16868" &&\
-    export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16868" &&\
-    make clean &&\
-    make -j &&\
-    cp src/wav2swf /d/p/dafl/wav/wav_225 &&\
-    make clean
+# RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
+#     export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16868" &&\
+#     export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16868" &&\
+#     make clean &&\
+#     make -j &&\
+#     cp src/wav2swf /d/p/dafl/wav/wav_225 &&\
+#     make clean
 
-RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
-    export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16890" &&\
-    export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16890" &&\
-    make clean &&\
-    make -j &&\
-    cp src/wav2swf /d/p/dafl/wav/wav_206 &&\
-    make clean
+# RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
+#     export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16890" &&\
+#     export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16890" &&\
+#     make clean &&\
+#     make -j &&\
+#     cp src/wav2swf /d/p/dafl/wav/wav_206 &&\
+#     make clean
 
 # mp3gain
 # CVE-2017-14406 interface.c:393
