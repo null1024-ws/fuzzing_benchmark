@@ -27,7 +27,7 @@ RUN mv /fuzzing_benchmark/DAFL-input /DAFL-input && rm -r /fuzzing_benchmark
 # set compiler flags
 ENV CXX=/fuzzer/DAFL/afl-clang-fast++
 ENV CC=/fuzzer/DAFL/afl-clang-fast
-ENV ASAN_OPTIONS=allocator_may_return_null=1,detect_leaks=0
+ENV ASAN_OPTIONS=abort_on_error=1:allocator_may_return_null=1:detect_leaks=0
 
 # cflow
 # CVE-2019-16165 parser.c:1298
