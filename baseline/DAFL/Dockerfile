@@ -178,12 +178,15 @@ RUN mkdir -p /d/p/dafl/wav/wav_243 && \
     mkdir -p /d/p/dafl/wav/wav_225 && \
     mkdir -p /d/p/dafl/wav/wav_206
 
+RUN sed -i 's/^int voidclass;/extern int voidclass;/' /unibench/swftools-0.9.2/lib/as3/registry.h && \
+    echo 'int voidclass = 0;' > /unibench/swftools-0.9.2/lib/as3/registry_def.c
+
 RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
     sed -i 's/int inline ActionTagSize/int ActionTagSize/' ./lib/modules/swfaction.c &&\
     sed -i 's/byte inline PaethPredictor/byte PaethPredictor/' ./src/png2swf.c &&\
     export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16793" &&\
     export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16793" &&\
-    make -j &&\
+    make CFLAGS="-fno-common" &&\
     cp src/wav2swf /d/p/dafl/wav/wav_243 &&\
     make clean
 
