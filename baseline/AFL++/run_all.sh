@@ -2,8 +2,7 @@
 set -e
 
 IMAGE_NAME="aflpp-env"
-# TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
-TARGETS=("wav2swf")
+TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
 TIMELIMIT=180 # 24 hours
 REPEAT=3
 
