@@ -4,9 +4,9 @@ set -e
 IMAGE_NAME="dafl-env"
 # TARGETS=("cflow" "jhead" "lame" "mp3gain")
 TARGETS=("cflow")
-TIMELIMIT=180 # 
+TIMELIMIT=180 
 REPEAT=3
-MAX_PARALLEL=100
+MAX_PARALLEL=4
 
 # Parse optional arguments
 while getopts "t:r:p:" opt; do
@@ -21,7 +21,6 @@ done
 HOST_OUTPUT_DIR="$(pwd)/dafl_unibench_results"
 mkdir -p "$HOST_OUTPUT_DIR"
 
-# Function to log results
 log_result() {
   local target=$1
   local target_loc=$2
@@ -34,18 +33,12 @@ log_result() {
 
 run_fuzzing_task() {
   local target=$1
-  local binary_dir=$2
+  local target_loc=$2
   local r=$3
   
-  TARGET_LOC=$(basename "$binary_dir")               # e.g., parser_1298
-  SAFE_NAME="${target//[^a-zA-Z0-9]/_}_${TARGET_LOC}_run${r}"
+  SAFE_NAME="${target//[^a-zA-Z0-9]/_}_${target_loc}_run${r}"
   CONTAINER_NAME="dafl_${SAFE_NAME}"
-  BINARY_PATH="$binary_dir/$target"
-
-  if [[ ! -f "$BINARY_PATH" ]]; then
-      log_result "$target" "$TARGET_LOC" "$r" "FAILED" "Binary not found: $BINARY_PATH"
-      return 1
-  fi
+  BINARY_PATH="/d/p/dafl/$target/$target_loc/$target"
 
   # Set input dir based on target
   case "$target" in
@@ -62,28 +55,32 @@ run_fuzzing_task() {
       "cflow")   ARGS="@@";;
       "lame")    ARGS="@@ /dev/null" ;;
       "jhead")   ARGS="@@" ;;
-      *) log_result "$target" "$TARGET_LOC" "$r" "FAILED" "Unknown target $target"; return 1 ;;
+      *) log_result "$target" "$target_loc" "$r" "FAILED" "Unknown target $target"; return 1 ;;
   esac
 
   OUTPUT_DIR="/output/$SAFE_NAME"
   
-  log_result "$target" "$TARGET_LOC" "$r" "STARTING" "Launching container"
+  log_result "$target" "$target_loc" "$r" "STARTING" "Launching container"
 
-  # remove existing container if it exists
   if docker ps -a --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
       docker rm -f "$CONTAINER_NAME" > /dev/null 2>&1
   fi
 
-  # start the container
   if ! docker run -dit --name "$CONTAINER_NAME" "$IMAGE_NAME" bash > /dev/null 2>&1; then
-      log_result "$target" "$TARGET_LOC" "$r" "FAILED" "Failed to start container"
+      log_result "$target" "$target_loc" "$r" "FAILED" "Failed to start container"
       return 1
   fi
 
   docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR"
 
-  # start fuzzing
-  log_result "$target" "$TARGET_LOC" "$r" "RUNNING" "Started fuzzing with timeout ${TIMELIMIT}s"
+
+  if ! docker exec "$CONTAINER_NAME" test -f "$BINARY_PATH"; then
+      log_result "$target" "$target_loc" "$r" "FAILED" "Binary not found in container: $BINARY_PATH"
+      docker rm -f "$CONTAINER_NAME" > /dev/null 2>&1 || true
+      return 1
+  fi
+
+  log_result "$target" "$target_loc" "$r" "RUNNING" "Started fuzzing with timeout ${TIMELIMIT}s"
   docker exec "$CONTAINER_NAME" screen -dmS "fuzz_${SAFE_NAME}" bash -c "
       timeout ${TIMELIMIT}s /fuzzer/DAFL/afl-fuzz \
       -m none \
@@ -95,17 +92,16 @@ run_fuzzing_task() {
   sleep "$((TIMELIMIT + 5))"
   
   if ! docker ps -q --filter "name=$CONTAINER_NAME" | grep -q .; then
-      log_result "$target" "$TARGET_LOC" "$r" "WARNING" "Container stopped unexpectedly"
+      log_result "$target" "$target_loc" "$r" "WARNING" "Container stopped unexpectedly"
   fi
 
-  log_result "$target" "$TARGET_LOC" "$r" "STOPPING" "Stopping container"
+  log_result "$target" "$target_loc" "$r" "STOPPING" "Stopping container"
   docker stop "$CONTAINER_NAME" > /dev/null 2>&1 || true
 
-  # copy results
   if docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR/$SAFE_NAME-output" > /dev/null 2>&1; then
-      log_result "$target" "$TARGET_LOC" "$r" "COMPLETED" "Results copied to $HOST_OUTPUT_DIR/$SAFE_NAME-output"
+      log_result "$target" "$target_loc" "$r" "COMPLETED" "Results copied to $HOST_OUTPUT_DIR/$SAFE_NAME-output"
   else
-      log_result "$target" "$TARGET_LOC" "$r" "WARNING" "Failed to copy results"
+      log_result "$target" "$target_loc" "$r" "WARNING" "Failed to copy results"
   fi
 
   # clean
@@ -135,29 +131,41 @@ run_tasks_with_concurrency_control() {
     
     [[ $running -ge $MAX_PARALLEL ]] && sleep 1
   done
-
+  
   wait
 }
 
 echo "[+] Starting fuzzing with TIMELIMIT=${TIMELIMIT}s, REPEAT=${REPEAT}, MAX_PARALLEL=${MAX_PARALLEL}"
 echo "[+] Results will be saved to $HOST_OUTPUT_DIR"
 
+TEMP_CONTAINER="dafl_temp_$(date +%s)"
+docker run -dit --name "$TEMP_CONTAINER" "$IMAGE_NAME" bash > /dev/null 2>&1
+
 TASKS=()
 for ((r=1; r<=REPEAT; r++)); do
   for target in "${TARGETS[@]}"; do
     VARIANT_DIR="/d/p/dafl/$target"
     
-    if [[ ! -d "$VARIANT_DIR" ]]; then
-      echo "[!] Target directory does not exist: $VARIANT_DIR"
+    if ! docker exec "$TEMP_CONTAINER" test -d "$VARIANT_DIR"; then
+      echo "[!] Target directory does not exist in container: $VARIANT_DIR"
       continue
     fi
 
-    for binary_dir in "$VARIANT_DIR"/*; do
-      [[ -d "$binary_dir" ]] || continue
-      TASKS+=("run_fuzzing_task $target \"$binary_dir\" $r")
+    SUB_DIRS=$(docker exec "$TEMP_CONTAINER" find "$VARIANT_DIR" -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
+    
+    if [[ -z "$SUB_DIRS" ]]; then
+      echo "[!] No subdirectories found for target: $target"
+      continue
+    fi
+    
+
+    for dir_name in $SUB_DIRS; do
+      TASKS+=("run_fuzzing_task $target \"$dir_name\" $r")
     done
   done
 done
+
+docker rm -f "$TEMP_CONTAINER" > /dev/null 2>&1
 
 if [[ ${#TASKS[@]} -eq 0 ]]; then
   echo "[!] No valid tasks found"
