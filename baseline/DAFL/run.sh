@@ -114,6 +114,7 @@ for ((r=1; r<=REPEAT; r++)); do
             screen -dmS \"fuzz_${SAFE_NAME}\" bash -c \"
                 timeout ${TIMELIMIT}s /fuzzer/DAFL/afl-fuzz \
                 -m none \
+                -t 99999 \
                 -i \"$INPUT_DIR\" \
                 -o \"$OUTPUT_DIR\" \
                 -- \"$BINARY_PATH\" $ARGS
