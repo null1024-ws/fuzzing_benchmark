@@ -203,3 +203,5 @@ RUN mkdir -p /d/p/dafl/wav/wav_243 && \
 #     make -j &&\
 #     cp src/wav2swf /d/p/dafl/wav/wav_206 &&\
 #     make clean
+
+RUN unset ASAN_OPTIONS
