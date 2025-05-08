@@ -2,7 +2,7 @@
 set -e
 
 IMAGE_NAME="dafl-env"
-TARGETS=("cflow" "jhead" "lame" "mp3gain")
+TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
 TIMELIMIT=86400 # Timeout in seconds
 REPEAT=3
 
