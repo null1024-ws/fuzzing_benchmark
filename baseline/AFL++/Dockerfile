@@ -18,6 +18,8 @@ RUN git clone https://github.com/AFLplusplus/AFLplusplus.git /AFLplusplus &&\
 ENV CC=/AFLplusplus/afl-cc
 ENV CXX=/AFLplusplus/afl-c++
 ENV AFL_SKIP_CPUFREQ=1
+ENV CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+ENV CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 
 RUN cd /unibench/jhead-3.00 &&\
     make -j &&\
