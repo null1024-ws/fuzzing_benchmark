@@ -79,6 +79,8 @@ for ((r=1; r<=REPEAT; r++)); do
 
     docker exec "$CONTAINER_NAME" screen -dmS "fuzz_${SAFE_NAME}" bash -c "
         timeout 86400s /AFLplusplus/afl-fuzz \
+	-m none \
+        -t 99999 \
         -i \"$INPUT_DIR\" \
         -o \"$OUTPUT_DIR\" \
 	-- /d/p/aflpp/$target $ARGS
