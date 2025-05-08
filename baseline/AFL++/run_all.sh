@@ -3,7 +3,7 @@ set -e
 
 IMAGE_NAME="aflpp-env"
 TARGETS=("cflow" "jhead" "lame" "mp3gain" "wav2swf")
-TIMELIMIT=180 # 24 hours
+TIMELIMIT=86400 # 24 hours
 REPEAT=3
 
 # fuzzing args for different targets from unibench repo
@@ -78,7 +78,7 @@ for ((r=1; r<=REPEAT; r++)); do
     docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR"
 
     docker exec "$CONTAINER_NAME" screen -dmS "fuzz_${SAFE_NAME}" bash -c "
-        timeout 180s /AFLplusplus/afl-fuzz \
+        timeout 86400s /AFLplusplus/afl-fuzz \
         -i \"$INPUT_DIR\" \
         -o \"$OUTPUT_DIR\" \
 	-- /d/p/aflpp/$target $ARGS
