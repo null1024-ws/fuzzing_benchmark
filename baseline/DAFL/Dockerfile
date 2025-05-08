@@ -29,6 +29,8 @@ ENV CXX=/fuzzer/DAFL/afl-clang-fast++
 ENV CC=/fuzzer/DAFL/afl-clang-fast
 # ENV ASAN_OPTIONS=abort_on_error=1:allocator_may_return_null=1:detect_leaks=0:symbolize=0
 ENV ASAN_OPTIONS=abort_on_error=1:symbolize=0
+ENV CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+ENV CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 
 # cflow
 # CVE-2019-16165 parser.c:1298
@@ -99,7 +101,6 @@ RUN cd /unibench/mp3gain-1.5.2 && sed -i 's/CC=/CC?=/' Makefile &&\
 # CVE-2018-17088 gpsinfo.c:104
 # CVE-2018-16554 gpsinfo.c:164
 # CVE-2022-28550 jhead.c:345
-
 RUN mkdir -p /d/p/dafl/jhead/exif_1021 && \
     mkdir -p /d/p/dafl/jhead/gpsinfo_104 && \
     mkdir -p /d/p/dafl/jhead/gpsinfo_164 && \
@@ -175,34 +176,33 @@ RUN cd /unibench/lame-3.99.5 && ./configure --disable-shared &&\
 # CVE-2017-16793 wav.c:243
 # CVE-2017-16868 wav.c:225
 # CVE-2017-16890 wav.c:206
-
 RUN mkdir -p /d/p/dafl/wav/wav_243 && \
     mkdir -p /d/p/dafl/wav/wav_225 && \
     mkdir -p /d/p/dafl/wav/wav_206
 
-# RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
-#     sed -i 's/int inline ActionTagSize/int ActionTagSize/' ./lib/modules/swfaction.c &&\
-#     sed -i 's/byte inline PaethPredictor/byte PaethPredictor/' ./src/png2swf.c &&\
-#     export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16793" &&\
-#     export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16793" &&\
-#     make CFLAGS="-fno-common" &&\
-#     cp src/wav2swf /d/p/dafl/wav/wav_243 &&\
-#     make clean
+RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
+    sed -i 's/int inline ActionTagSize/int ActionTagSize/' ./lib/modules/swfaction.c &&\
+    sed -i 's/byte inline PaethPredictor/byte PaethPredictor/' ./src/png2swf.c &&\
+    export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16793" &&\
+    export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16793" &&\
+    make CFLAGS="-fno-common" &&\
+    cp src/wav2swf /d/p/dafl/wav/wav_243 &&\
+    make clean
 
-# RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
-#     export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16868" &&\
-#     export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16868" &&\
-#     make clean &&\
-#     make -j &&\
-#     cp src/wav2swf /d/p/dafl/wav/wav_225 &&\
-#     make clean
+RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
+    export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16868" &&\
+    export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16868" &&\
+    make clean &&\
+    make -j &&\
+    cp src/wav2swf /d/p/dafl/wav/wav_225 &&\
+    make clean
 
-# RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
-#     export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16890" &&\
-#     export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16890" &&\
-#     make clean &&\
-#     make -j &&\
-#     cp src/wav2swf /d/p/dafl/wav/wav_206 &&\
-#     make clean
+RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
+    export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-16890" &&\
+    export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-16890" &&\
+    make clean &&\
+    make -j &&\
+    cp src/wav2swf /d/p/dafl/wav/wav_206 &&\
+    make clean
 
 RUN unset ASAN_OPTIONS
