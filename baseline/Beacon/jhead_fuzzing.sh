@@ -17,9 +17,11 @@ cd jhead-3.00
 export CC=wllvm
 export CXX=wllvm++
 export LLVM_COMPILER=clang
+export CFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
+export CXXFLAGS="-g -fno-omit-frame-pointer -fcommon -Wno-error"
 
 make clean
-make CFLAGS="-g" -j # mandatory flags
+make -j
 extract-bc jhead
 
 mkdir -p jhead_fuzzing
