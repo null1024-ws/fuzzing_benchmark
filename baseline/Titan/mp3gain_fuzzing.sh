@@ -51,6 +51,7 @@ if [ ! -d "$SEEDS_DIR" ]; then
 fi
 cp -r ../../seeds/general_evaluation/mp3/* "$SEEDS_DIR/"
 
+cp ./"$BIN_NAME" /mp3gain
 # Start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you may comment this line
 timeout 24h "$REPO_DIR/afl-fuzz" -i "$SEEDS_DIR" -o /fuzz_output -m none -t 99999 -s ./bug_conf_cluster -k ./bug_over_cluster -d -- ./"$BIN_NAME" @@

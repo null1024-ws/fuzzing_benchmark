@@ -38,9 +38,40 @@ run_fuzzing() {
     docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR"
 
     CMD="./${target}_fuzzing.sh ${target_lines[*]}"
+    START_TIME=$(date +%s)
     docker exec "$CONTAINER_NAME" screen -dmS "fuzz_$SAFE_NAME" bash -c "$CMD"
-
     sleep "$((TIMELIMIT + 5))"
+    
+    # record and replay the crashes
+    BINARY_PATH="/${target}"
+    case "$target" in
+        "mp3gain")
+            ARGS="@@"
+            ;;
+        "wav2swf")
+            ARGS="-o /dev/null @@"
+            ;;
+        "cflow")
+            ARGS="@@"
+            ;;
+        "lame")
+            ARGS="@@ /dev/null"
+            ;;
+        "jhead")
+            ARGS="@@"
+            ;;
+        *)
+            exit 0
+            ;;
+    esac  
+    docker exec "$CONTAINER_NAME" bash -c "
+  /replay_crash.sh \
+  \"${OUTPUT_DIR}\" \
+  \"${BINARY_PATH}\" \
+  \"${ARGS}\" \
+  \"${START_TIME}\"
+"
+
     docker stop "$CONTAINER_NAME"
     mkdir -p "$HOST_OUTPUT_DIR"
     docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR" || true
