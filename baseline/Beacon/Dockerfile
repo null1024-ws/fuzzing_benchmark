@@ -24,6 +24,9 @@ RUN set -e && \
     fi && \
     echo "Fetch the unibench and seeds successfully!"
 
-RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git
-RUN cp /fuzzing_benchmark/baseline/Beacon/*.sh ./
-RUN ls ./*.sh && sleep 10
+RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git && \
+    mv fuzzing_benchmark/baseline/Beacon/*.sh ./ && \
+    mv fuzzing_benchmark/baseline/common/replay_crash.sh / && \
+    chmod +x /replay_crash.sh && \
+    rm -rf fuzzing_benchmark
+
