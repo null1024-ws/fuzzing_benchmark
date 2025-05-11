@@ -56,3 +56,7 @@ RUN UNIBENCH_SEED_URL="https://github.com/unifuzz/seeds.git" && \
     fi
 RUN cp -r seeds/* ../
 RUN rm -rf seeds
+
+RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git /fuzzing_benchmark
+RUN mv /fuzzing_benchmark/baseline/DAFL/replay_crash.sh / && rm -r /fuzzing_benchmark
+RUN chmod +x /replay_crash.sh

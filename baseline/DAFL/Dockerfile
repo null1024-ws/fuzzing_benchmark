@@ -22,7 +22,8 @@ RUN set -e && \
     echo "Fetch the unibench and seeds successfully!"
 
 RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git /fuzzing_benchmark
-RUN mv /fuzzing_benchmark/DAFL-input /DAFL-input && rm -r /fuzzing_benchmark
+RUN mv /fuzzing_benchmark/DAFL-input /DAFL-input && mv /fuzzing_benchmark/baseline/DAFL/replay_crash.sh / && rm -r /fuzzing_benchmark
+RUN chmod +x /replay_crash.sh
 
 # set compiler flags
 ENV CXX=/fuzzer/DAFL/afl-clang-fast++
