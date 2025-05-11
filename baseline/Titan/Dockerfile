@@ -25,6 +25,10 @@ RUN set -e && \
     echo "Fetch the unibench and seeds successfully!"
 
 RUN git clone https://github.com/5hadowblad3/Titan.git
-RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git
+RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git && \
+    mv fuzzing_benchmark/baseline/Beacon/*.sh ./ && \
+    mv fuzzing_benchmark/baseline/common/replay_crash.sh / && \
+    chmod +x /replay_crash.sh && \
+    rm -rf fuzzing_benchmark
 RUN cp /fuzzing_benchmark/baseline/Titan/*.sh ./
 RUN ls ./*.sh
