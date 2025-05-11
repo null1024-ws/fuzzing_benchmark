@@ -77,7 +77,8 @@ for ((r=1; r<=REPEAT; r++)); do
         bash
 
     docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR"
-
+    
+    START_TIME=$(date +%s)
     docker exec "$CONTAINER_NAME" screen -dmS "fuzz_${SAFE_NAME}" bash -c "
         timeout 24h /AFLplusplus/afl-fuzz \
         -m none \
