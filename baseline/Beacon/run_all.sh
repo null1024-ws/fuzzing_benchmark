@@ -1,7 +1,8 @@
 #!/bin/bash
 set -e 
 IMAGE_NAME="beacon-env"
-TARGETS=("wav2swf" "mp3gain" "jhead" "lame")
+# TARGETS=("wav2swf" "mp3gain" "jhead" "lame")
+TARGETS=("jhead")
 TIMELIMIT=86400 # 24 hours
 REPEAT=3
 
@@ -41,6 +42,26 @@ run_fuzzing() {
     
     # record and replay the crashes
     BINARY_PATH="/${target}"
+    case "$target" in
+        "mp3gain")
+            ARGS="@@"
+            ;;
+        "wav2swf")
+            ARGS="-o /dev/null @@"
+            ;;
+        "cflow")
+            ARGS="@@"
+            ;;
+        "lame")
+            ARGS="@@ /dev/null"
+            ;;
+        "jhead")
+            ARGS="@@"
+            ;;
+        *)
+            exit 0
+            ;;
+    esac  
     docker exec "$CONTAINER_NAME" bash -c "
   /replay_crash.sh \
   \"${OUTPUT_DIR}\" \
