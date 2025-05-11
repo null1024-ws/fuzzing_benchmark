@@ -47,7 +47,7 @@ clang wav2swf_${BASENAME}_${LINENUM}.bc -o wav2swf_${BASENAME}_${LINENUM} -lm -l
 
 # prepare the seeds
 mkdir in
-cp -r seeds/general_evaluation/wav/* in/
+cp -r /seeds/general_evaluation/wav/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line

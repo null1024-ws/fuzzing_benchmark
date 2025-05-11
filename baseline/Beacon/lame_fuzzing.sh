@@ -41,7 +41,7 @@ clang lame_${BASENAME}_${LINENUM}.bc -o lame_${BASENAME}_${LINENUM} -lm -lz -lnc
 
 # prepare the seeds
 mkdir in
-cp -r seeds/general_evaluation/lame3.99.5/* in/ 
+cp -r /seeds/general_evaluation/lame3.99.5/* in/ 
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
