@@ -7,7 +7,7 @@ TIMELIMIT=86400 # 24 hours
 REPEAT=3
 
 # target lines for each program
-# cflow_targets=("parser.c:1284" "parser.c:302" "parser.c:1298")
+cflow_targets=("parser.c:1284" "parser.c:302" "parser.c:1298")
 wav2swf_targets=("wav.c:206" "wav.c:243" "wav.c:225")
 mp3gain_targets=("interface.c:393" "layer3.c:1279" "layer3.c:779" "interface.c:188")
 jhead_targets=("exif.c:1021" "gpsinfo.c:104" "gpsinfo.c:164" "jhead.c:345")
