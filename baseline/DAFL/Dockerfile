@@ -22,7 +22,7 @@ RUN set -e && \
     echo "Fetch the unibench and seeds successfully!"
 
 RUN git clone https://github.com/null1024-ws/fuzzing_benchmark.git /fuzzing_benchmark
-RUN mv /fuzzing_benchmark/DAFL-input /DAFL-input && mv /fuzzing_benchmark/baseline/DAFL/replay_crash.sh / && rm -r /fuzzing_benchmark
+RUN mv /fuzzing_benchmark/DAFL-input /DAFL-input && mv /fuzzing_benchmark/baseline/common/replay_crash.sh / && rm -r /fuzzing_benchmark
 RUN chmod +x /replay_crash.sh
 
 # set compiler flags
@@ -205,7 +205,5 @@ RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
     make -j &&\
     cp src/wav2swf /d/p/dafl/wav2swf/wav_206 &&\
     make clean
-
-
 
 RUN unset ASAN_OPTIONS

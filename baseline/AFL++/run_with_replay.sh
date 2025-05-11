@@ -85,7 +85,7 @@ for ((r=1; r<=REPEAT; r++)); do
         -t 99999 \
         -i \"$INPUT_DIR\" \
         -o \"$OUTPUT_DIR\" \
-	-- /d/p/aflpp/$target $ARGS
+	-- $BINARY_PATH $ARGS
     "
 
     sleep "$((TIMELIMIT + 5))"
