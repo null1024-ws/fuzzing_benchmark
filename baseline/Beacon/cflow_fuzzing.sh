@@ -41,8 +41,8 @@ clang cflow_${BASENAME}_${LINENUM}.bc -o cflow_${BASENAME}_${LINENUM} -lm -lz /B
 mkdir in
 cp -r /seeds/general_evaluation/cflow/* in/ 
 
+cp ./cflow_${BASENAME}_${LINENUM} /cflow
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
 /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./cflow_${BASENAME}_${LINENUM} @@
 
-cp ./cflow_${BASENAME}_${LINENUM} /cflow

@@ -45,11 +45,13 @@ clang mp3gain_${BASENAME}_${LINENUM}.bc -o mp3gain_${BASENAME}_${LINENUM} -lm -l
 mkdir in
 cp -r /seeds/general_evaluation/mp3/* in/ 
 
+
+cp ./mp3gain_${BASENAME}_${LINENUM} /mp3gain
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
 /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./mp3gain_${BASENAME}_${LINENUM} @@
 
-cp ./mp3gain_${BASENAME}_${LINENUM} /mp3gain
+
 
 
 

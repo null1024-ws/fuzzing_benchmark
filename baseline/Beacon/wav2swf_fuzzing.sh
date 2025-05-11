@@ -49,8 +49,7 @@ clang wav2swf_${BASENAME}_${LINENUM}.bc -o wav2swf_${BASENAME}_${LINENUM} -lm -l
 mkdir in
 cp -r /seeds/general_evaluation/wav/* in/
 
+cp ./wav2swf_${BASENAME}_${LINENUM} /wav2swf
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-/Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./wav2swf_${BASENAME}_${LINENUM} -o /dev/null @@
-
-cp ./wav2swf_${BASENAME}_${LINENUM} /wav2swf
+timeout 600s /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./wav2swf_${BASENAME}_${LINENUM} -o /dev/null @@

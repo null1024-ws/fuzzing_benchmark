@@ -43,8 +43,7 @@ clang lame_${BASENAME}_${LINENUM}.bc -o lame_${BASENAME}_${LINENUM} -lm -lz -lnc
 mkdir in
 cp -r /seeds/general_evaluation/lame3.99.5/* in/ 
 
+cp ./lame_${BASENAME}_${LINENUM} /lame
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
 /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./lame_${BASENAME}_${LINENUM} @@ /dev/null
-
-cp ./lame_${BASENAME}_${LINENUM} /lame

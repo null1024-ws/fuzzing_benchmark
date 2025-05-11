@@ -37,7 +37,7 @@ run_fuzzing() {
     START_TIME=$(date +%s)
     echo "Fuzzing for $target at $target_line (Repeat $repeat_num) in container $CONTAINER_NAME"
 
-    docker exec "$CONTAINER_NAME" screen -dmS "fuzz_$SAFE_NAME" bash -c "timeout ${TIMELIMIT}s ./${target}_fuzzing.sh $target_line"
+    docker exec "$CONTAINER_NAME" screen -dmS "fuzz_$SAFE_NAME" bash -c "./${target}_fuzzing.sh $target_line"
     sleep "$((TIMELIMIT + 5))"
     
     # record and replay the crashes
