@@ -92,13 +92,13 @@ for ((r=1; r<=REPEAT; r++)); do
 
     # record and replay
     OT_DIR="/output/$SAFE_NAME/default"
-    docker exec "$CONTAINER_NAME" bash -c "
-	/replay_crash.sh \ 
-	\"${OT_DIR}\" \
-	\"${BINARY_PATH}\" \
-	\"${ARGS}\" \
-	\"${START_TIME}\"
-    "
+docker exec "$CONTAINER_NAME" bash -c "
+  /replay_crash.sh \
+  \"${OT_DIR}\" \
+  \"${BINARY_PATH}\" \
+  \"${ARGS}\" \
+  \"${START_TIME}\"
+"
 
     docker stop "$CONTAINER_NAME"
 
