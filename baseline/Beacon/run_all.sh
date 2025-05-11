@@ -40,6 +40,7 @@ run_fuzzing() {
     sleep "$((TIMELIMIT + 5))"
     
     # record and replay the crashes
+    BINARY_PATH="/${target}"
     docker exec "$CONTAINER_NAME" bash -c "
   /replay_crash.sh \
   \"${OUTPUT_DIR}\" \
