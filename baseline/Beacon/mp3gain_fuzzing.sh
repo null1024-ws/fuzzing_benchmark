@@ -47,7 +47,7 @@ cp -r /seeds/general_evaluation/mp3/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-timeout 24h /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./mp3gain_${BASENAME}_${LINENUM} @@
+/Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./mp3gain_${BASENAME}_${LINENUM} @@
 
 cp ./mp3gain_${BASENAME}_${LINENUM} /mp3gain
 
