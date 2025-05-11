@@ -32,8 +32,21 @@ run_fuzzing() {
  
     docker run -dit --name "$CONTAINER_NAME" "$IMAGE_NAME" bash
     docker exec "$CONTAINER_NAME" mkdir -p "$OUTPUT_DIR"
+
+    START_TIME=$(date +%s)
+    echo "Fuzzing for $target at $target_line (Repeat $repeat_num) in container $CONTAINER_NAME"
+
     docker exec "$CONTAINER_NAME" screen -dmS "fuzz_$SAFE_NAME" bash -c "./${target}_fuzzing.sh $target_line"
     sleep "$((TIMELIMIT + 5))"
+    
+    # record and replay the crashes
+    docker exec "$CONTAINER_NAME" bash -c "
+  /replay_crash.sh \
+  \"${OUTPUT_DIR}\" \
+  \"${BINARY_PATH}\" \
+  \"${ARGS}\" \
+  \"${START_TIME}\"
+"
     docker stop "$CONTAINER_NAME"
     mkdir -p "$HOST_OUTPUT_DIR"
     docker cp "$CONTAINER_NAME:$OUTPUT_DIR" "$HOST_OUTPUT_DIR" || true

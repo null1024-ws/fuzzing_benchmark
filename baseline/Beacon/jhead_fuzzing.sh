@@ -46,4 +46,4 @@ cp -r /seeds/general_evaluation/jhead/* in/
 
 # start fuzzing
 export AFL_SKIP_CPUFREQ=1 # you can comment this line
-timeout 24h /Beacon/afl-fuzz -i in -o out -m none -t 99999 -d -- ./jhead_${BASENAME}_${LINENUM} @@
+timeout 24h /Beacon/afl-fuzz -i in -o /fuzz_output -m none -t 99999 -d -- ./jhead_${BASENAME}_${LINENUM} @@
