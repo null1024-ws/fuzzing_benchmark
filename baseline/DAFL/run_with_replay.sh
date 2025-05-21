@@ -128,7 +128,7 @@ for ((r=1; r<=REPEAT; r++)); do
         
     # record and replay
 	docker exec "$CONTAINER_NAME" bash -c "
-            /replay_crash.sh \
+            /replay_crash_gdb.sh \
             \"${OUTPUT_DIR}\" \
             \"${BINARY_PATH}\" \
             \"${ARGS}\" \
