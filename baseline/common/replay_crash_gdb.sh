@@ -63,7 +63,7 @@ for crash_file in $(ls "$CRASHES_DIR" | grep -v 'README.txt\|replay_log.txt'); d
     echo "Command: $BINARY_PATH $FINAL_ARGS" >> "$LOG_FILE"
     echo "----------------------------------------------" >> "$LOG_FILE"
     # (timeout -k 30 15 "$BINARY_PATH" $FINAL_ARGS) >> "$LOG_FILE" 2>&1 || echo "[Exit code: $?]" >> "$LOG_FILE"
-    echo -e "run\nbt\nquit" | gdb --batch --args "$BINARY_PATH" $FINAL_ARGS >> "$LOG_FILE" 2>&1
+    echo -e "run\nbt\nquit" | gdb --args "$BINARY_PATH" $FINAL_ARGS >> "$LOG_FILE" 2>&1
     echo "----------------------------------------------" >> "$LOG_FILE"
 done
 
