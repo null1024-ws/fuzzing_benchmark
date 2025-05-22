@@ -42,13 +42,15 @@ export CMAKE_EXPORT_COMPILE_COMMANDS=1
 # program="swftools-0.9.2"
 # binaries="wav2swf"
 # cd $program
+# sed -i 's/int inline ActionTagSize/int ActionTagSize/' ./lib/modules/swfaction.c
+# sed -i 's/byte inline PaethPredictor/byte PaethPredictor/' ./src/png2swf.c
 # ./configure
 # make -j clean
 # yes | /smake/smake --init
 # /smake/smake -j 1
 
 # for binary in $binaries; do
-#     cp -r sparrow/ /benchmark/smake-out/$binary || exit 1
+#     cp -r sparrow/src/$binary /benchmark/smake-out/$binary
 # done
 
 ## Program: mp3gain #ok
