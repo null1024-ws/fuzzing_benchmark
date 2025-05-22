@@ -140,10 +140,14 @@ RUN cd /unibench/jhead-3.00 &&\
 # CVE-2017-15019 mpglib_interface.c:332
 # CVE-2015-9100	util.c:608
 # CVE-2017-15018 vbrquantize.c:184
+# CVE-2017-9410 util.c:606
+# CVE-2025-0522 get_audio.c:1454
 RUN mkdir -p /d/p/dafl/lame/id3tag_248 && \
     mkdir -p /d/p/dafl/lame/mpglib_332 && \
     mkdir -p /d/p/dafl/lame/util_608 && \
-    mkdir -p /d/p/dafl/lame/vbrquantize_184
+    mkdir -p /d/p/dafl/lame/vbrquantize_184 && \
+    mkdir -p /d/p/dafl/lame/util_606 && \
+    mkdir -p /d/p/dafl/lame/get_audio_1454
 
 RUN cd /unibench/lame-3.99.5 && ./configure --disable-shared &&\
     export DAFL_DFG_SCORE="/DAFL-input/dfg/lame/CVE-2017-13712" &&\
@@ -173,13 +177,30 @@ RUN cd /unibench/lame-3.99.5 && ./configure --disable-shared &&\
     make -j &&\
     cp frontend/lame /d/p/dafl/lame/vbrquantize_184
 
+RUN cd /unibench/lame-3.99.5 && ./configure --disable-shared &&\
+    export DAFL_DFG_SCORE="/DAFL-input/dfg/lame/CVE-2017-9410" &&\
+    export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/lame/CVE-2017-9410" &&\
+    make clean &&\
+    make -j &&\
+    cp frontend/lame /d/p/dafl/lame/util_606
+
+RUN cd /unibench/lame-3.99.5 && ./configure --disable-shared &&\
+    export DAFL_DFG_SCORE="/DAFL-input/dfg/lame/CVE-2025-0522" &&\
+    export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/lame/CVE-2025-0522" &&\
+    make clean &&\
+    make -j &&\
+    cp frontend/lame /d/p/dafl/lame/get_audio_1454
+
+
 # wav2swf
 # CVE-2017-16793 wav.c:243
 # CVE-2017-16868 wav.c:225
 # CVE-2017-16890 wav.c:206
+# CVE-2017-11099 wav.c:281
 RUN mkdir -p /d/p/dafl/wav2swf/wav_243 && \
     mkdir -p /d/p/dafl/wav2swf/wav_225 && \
-    mkdir -p /d/p/dafl/wav2swf/wav_206
+    mkdir -p /d/p/dafl/wav2swf/wav_206 && \
+    mkdir -p /d/p/dafl/wav2swf/wav_281
 
 RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
     sed -i 's/int inline ActionTagSize/int ActionTagSize/' ./lib/modules/swfaction.c &&\
@@ -204,6 +225,14 @@ RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
     make clean &&\
     make -j &&\
     cp src/wav2swf /d/p/dafl/wav2swf/wav_206 &&\
+    make clean
+
+RUN cd /unibench/swftools-0.9.2/ && ./configure &&\
+    export DAFL_DFG_SCORE="/DAFL-input/dfg/wav2swf/CVE-2017-11099" &&\
+    export DAFL_SELECTIVE_COV="/DAFL-input/inst-targ/wav2swf/CVE-2017-11099" &&\
+    make clean &&\
+    make -j &&\
+    cp src/wav2swf /d/p/dafl/wav2swf/wav_281 &&\
     make clean
 
 RUN unset ASAN_OPTIONS
