@@ -14,6 +14,7 @@ REPEAT=1
 # [3, "cflow", "@@", "cflow"],
 # [4, "lame3.99.5", "@@ /dev/null", "lame3.99.5"],
 # [5, "jhead", "@@", "jhead"]
+# [6, "gdk-pixbuf-pixdata", "@@ /dev/null", "pixbuf"]
 
 # Parse optional arguments
 while getopts "t:r:" opt; do
