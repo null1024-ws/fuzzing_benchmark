@@ -53,6 +53,11 @@ RUN cd /unibench/cflow-1.6 && ./configure &&\
     cp src/cflow /d/p/aflpp/ &&\
     make clean
 
+RUN apt update && apt install -y libglib2.0-dev gtk-doc-tools libtiff-dev libpng-dev &&\
+    cd /unibench/gdk-pixbuf-2.31.1 &&\
+    ./autogen.sh --enable-static=yes --enable-shared=no --with-included-loaders=yes && make -j &&\
+    cp gdk-pixbuf/gdk-pixbuf-pixdata /d/p/aflpp/ &&\
+    make clean
 RUN ls -alh /d/p/*
 
 RUN UNIBENCH_SEED_URL="https://github.com/unifuzz/seeds.git" && \
